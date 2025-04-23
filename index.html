@@ -1,0 +1,1830 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio de Desarrollador FiveM</title>
+    <style>
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            border-color: hsl(0, 0%, 89.8%);
+        }
+
+        /* NUEVO: Cursor personalizado */
+        html, body {
+            cursor: none; /* Ocultar el cursor predeterminado */
+        }
+
+        .cursor-dot,
+        .cursor-outline {
+            pointer-events: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background: linear-gradient(to right, #9333ea, #3b82f6);
+            transition: transform 0.1s ease-out;
+        }
+
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(147, 51, 234, 0.5);
+            transition: transform 0.3s ease-out, width 0.3s ease-out, height 0.3s ease-out, border 0.3s ease-out;
+        }
+
+        /* Cursor sobre elementos interactivos */
+        a, button, [role="button"], input[type="button"], input[type="submit"], input[type="reset"], .card {
+            cursor: none;
+        }
+
+        a:hover ~ .cursor-dot,
+        button:hover ~ .cursor-dot,
+        [role="button"]:hover ~ .cursor-dot,
+        input[type="button"]:hover ~ .cursor-dot,
+        input[type="submit"]:hover ~ .cursor-dot,
+        input[type="reset"]:hover ~ .cursor-dot,
+        .card:hover ~ .cursor-dot {
+            transform: translate(-50%, -50%) scale(1.5);
+        }
+
+        a:hover ~ .cursor-outline,
+        button:hover ~ .cursor-outline,
+        [role="button"]:hover ~ .cursor-outline,
+        input[type="button"]:hover ~ .cursor-outline,
+        input[type="submit"]:hover ~ .cursor-outline,
+        input[type="reset"]:hover ~ .cursor-outline,
+        .card:hover ~ .cursor-outline {
+            width: 30px;
+            height: 30px;
+            border-color: rgba(59, 130, 246, 0.7);
+            background-color: rgba(147, 51, 234, 0.1);
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #0a0a0a;
+            color: #fafafa;
+            line-height: 1.5;
+        }
+
+        /* Container */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(10px);
+            z-index: 50;
+        }
+
+        .header-content {
+            display: flex;
+            height: 4rem;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-weight: bold;
+            font-size: 1.25rem;
+            background: linear-gradient(to right, #9333ea, #3b82f6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        nav {
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            nav {
+                display: flex;
+                gap: 1.5rem;
+            }
+        }
+
+        /* NUEVO ESTILO DE BOTONES DE NAVEGACIÓN */
+        .nav-link {
+            position: relative;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #fafafa;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            background: transparent;
+            border: none;
+            overflow: hidden;
+        }
+
+        .nav-link:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(to right, rgba(147, 51, 234, 0.2), rgba(59, 130, 246, 0.2));
+            transition: width 0.3s ease;
+            z-index: -1;
+            border-radius: 0.5rem;
+        }
+
+        .nav-link:hover:before {
+            width: 100%;
+        }
+
+        .nav-link.active {
+            background: linear-gradient(to right, #9333ea, #3b82f6);
+            color: white;
+            font-weight: 600;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3);
+        }
+
+        .nav-link:active {
+            transform: translateY(1px);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: all 0.2s;
+            cursor: none;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: #fafafa;
+            color: #0a0a0a;
+        }
+
+        .btn-primary:hover {
+            background-color: #e5e5e5;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fafafa;
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-lg {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+        }
+
+        .btn-icon {
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+        }
+
+        .btn-gradient {
+            background: linear-gradient(to right, #9333ea, #3b82f6);
+            color: white;
+        }
+
+        .btn-gradient:hover {
+            background: linear-gradient(to right, #7e22ce, #2563eb);
+        }
+
+        .btn-gradient-pink {
+            background: linear-gradient(to right, #ec4899, #9333ea);
+            color: white;
+        }
+
+        .btn-gradient-pink:hover {
+            background: linear-gradient(to right, #db2777, #7e22ce);
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            overflow: hidden;
+            padding-top: 6rem;
+            padding-bottom: 5rem;
+        }
+
+        @media (min-width: 768px) {
+            .hero {
+                padding-top: 9rem;
+                padding-bottom: 8rem;
+            }
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom right, rgba(147, 51, 234, 0.2), rgba(10, 10, 10, 1));
+            pointer-events: none;
+        }
+
+        .hero-gradient-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 500px;
+            background: linear-gradient(to bottom right, rgba(147, 51, 234, 0.2), rgba(59, 130, 246, 0.2));
+            filter: blur(100px);
+            opacity: 0.3;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 2.5rem;
+        }
+
+        .hero-text {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .hero-title {
+            font-size: 2.25rem;
+            font-weight: bold;
+            letter-spacing: -0.025em;
+            line-height: 1.2;
+        }
+
+        @media (min-width: 768px) {
+            .hero-title {
+                font-size: 3.75rem;
+            }
+        }
+
+        .rotating-text {
+            display: inline-block;
+            min-width: 240px;
+            background: linear-gradient(to right, #9333ea, #3b82f6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            transition: all 1s ease-in-out;
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .rotating-text.fade-out {
+            opacity: 0;
+            transform: translateY(0.75rem);
+        }
+
+        .hero-description {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        /* Sections */
+        section {
+            padding: 4rem 0;
+            transition: all 0.5s;
+        }
+
+        @media (min-width: 768px) {
+            section {
+                padding: 6rem 0;
+            }
+        }
+
+        .section-highlight {
+            animation: pulse 1s ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.01); }
+            100% { transform: scale(1); }
+        }
+
+        .section-title {
+            font-size: 1.875rem;
+            font-weight: bold;
+            letter-spacing: -0.025em;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-divider {
+            height: 0.25rem;
+            width: 5rem;
+            background: linear-gradient(to right, #9333ea, #3b82f6);
+            border-radius: 9999px;
+            margin-bottom: 1rem;
+        }
+
+        .section-divider.center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-description {
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 1rem;
+            max-width: 700px;
+        }
+
+        .section-description.center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            gap: 2.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .about-grid {
+                grid-template-columns: repeat(2, 1fr);
+                align-items: center;
+            }
+        }
+
+        .about-image-container {
+            border-radius: 0.5rem;
+            overflow: hidden;
+            background: linear-gradient(to bottom right, rgba(147, 51, 234, 0.1), rgba(59, 130, 246, 0.1));
+            padding: 0.25rem;
+        }
+
+        .about-image-inner {
+            background: linear-gradient(to bottom right, #9333ea, #3b82f6);
+            border-radius: 0.5rem;
+            aspect-ratio: 1 / 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .about-image {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+        }
+
+        .about-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        /* Projects Section */
+        .projects-section {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .projects-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .projects-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .projects-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .card {
+            overflow: hidden;
+            border-radius: 0.5rem;
+            background-color: #1a1a1a;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: box-shadow 0.3s;
+        }
+
+        .card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-image {
+            aspect-ratio: 16 / 9;
+            background: linear-gradient(to bottom right, rgba(147, 51, 234, 0.1), rgba(59, 130, 246, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-image-center {
+            width: 50%;
+            height: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-image-center img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .card-gradient {
+            background: linear-gradient(to bottom right, #9333ea, #3b82f6);
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            background: linear-gradient(to right, #9333ea, #3b82f6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .card-link {
+            color: rgba(255, 255, 255, 0.7);
+            transition: color 0.2s;
+        }
+
+        .card-link:hover {
+            color: #fafafa;
+        }
+
+        .card-description {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1rem;
+        }
+
+        .badge-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.25rem 0.75rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .projects-more {
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        /* Skills Section */
+        .skills-section {
+            position: relative;
+        }
+
+        .skills-bg {
+            position: absolute;
+            inset: 0;
+            z-index: -10;
+            background: linear-gradient(to bottom, transparent, rgba(147, 51, 234, 0.05));
+            pointer-events: none;
+        }
+
+        .skills-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .skills-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .skills-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .skill-card {
+            background: linear-gradient(to bottom right, rgba(147, 51, 234, 0.05), rgba(59, 130, 246, 0.05));
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+        }
+
+        .skill-content {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .skill-icon {
+            background: linear-gradient(to bottom right, rgba(147, 51, 234, 0.1), rgba(59, 130, 246, 0.1));
+            width: 4rem;
+            height: 4rem;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+        .skill-icon svg {
+            width: 2rem;
+            height: 2rem;
+        }
+
+        .skill-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .skill-description {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .skills-bars {
+            display: grid;
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        @media (min-width: 768px) {
+            .skills-bars {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .skills-category {
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .skill-bar {
+            margin-bottom: 1rem;
+        }
+
+        .skill-bar-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+        }
+
+        .skill-bar-name {
+            font-weight: 500;
+        }
+
+        .skill-bar-bg {
+            width: 100%;
+            height: 0.625rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 9999px;
+        }
+
+        .skill-bar-fill {
+            height: 0.625rem;
+            border-radius: 9999px;
+            background: linear-gradient(to right, #9333ea, #3b82f6);
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background: linear-gradient(to bottom right, rgba(147, 51, 234, 0.1), rgba(59, 130, 246, 0.1));
+        }
+
+        .contact-cards {
+            max-width: 48rem;
+            margin: 0 auto;
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .contact-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .contact-card {
+            border-radius: 0.5rem;
+            overflow: hidden;
+            background-color: #1a1a1a;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .contact-card-header {
+            height: 4rem;
+        }
+
+        .discord-header {
+            background: linear-gradient(to right, rgba(147, 51, 234, 0.3), rgba(59, 130, 246, 0.3));
+        }
+
+        .instagram-header {
+            background: linear-gradient(to right, rgba(236, 72, 153, 0.3), rgba(147, 51, 234, 0.3));
+        }
+
+        .contact-card-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .contact-icon {
+            width: 4rem;
+            height: 4rem;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: -3rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 0 0 4px #1a1a1a;
+        }
+
+        .discord-icon {
+            background: linear-gradient(to right, #9333ea, #3b82f6);
+        }
+
+        .instagram-icon {
+            background: linear-gradient(to right, #ec4899, #9333ea);
+        }
+
+        .contact-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-description {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1rem;
+        }
+
+        .contact-username {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .username-box {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 1.125rem;
+            font-family: monospace;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem 0;
+        }
+
+        @media (min-width: 768px) {
+            footer {
+                padding: 3rem 0;
+            }
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        @media (min-width: 768px) {
+            .footer-content {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+        }
+
+        .footer-logo {
+            font-weight: bold;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #9333ea, #3b82f6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        @media (min-width: 768px) {
+            .footer-logo {
+                margin-bottom: 0;
+            }
+        }
+
+        .footer-copyright {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .footer-copyright {
+                text-align: right;
+            }
+        }
+
+        /* Canvas Styles */
+        canvas {
+            position: fixed;
+            inset: 0;
+            z-index: -10;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        /* Gradient Blob */
+        .gradient-blob-container {
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .blob-1 {
+            top: 5rem;
+            left: 2.5rem;
+            width: 300px;
+            height: 300px;
+            opacity: 0.2;
+        }
+
+        .blob-2 {
+            bottom: 0;
+            right: 2.5rem;
+            width: 400px;
+            height: 400px;
+            opacity: 0.2;
+        }
+
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            z-index: 100;
+        }
+
+        .toast {
+            background-color: #1a1a1a;
+            color: #fafafa;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-top: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            max-width: 350px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            transform: translateY(100%);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast-title {
+            font-weight: bold;
+        }
+
+        .toast-description {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Icons */
+        .icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+
+        .icon-lg {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+
+        .icon-white {
+            stroke: white;
+        }
+
+        .icon-purple {
+            stroke: #9333ea;
+        }
+
+        .icon-blue {
+            stroke: #3b82f6;
+        }
+
+        /* Desactivar cursor personalizado en dispositivos móviles */
+        @media (max-width: 768px) {
+            html, body, a, button, [role="button"], input[type="button"], input[type="submit"], input[type="reset"], .card {
+                cursor: auto;
+            }
+            
+            .cursor-dot, .cursor-outline {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background Canvas -->
+    <canvas id="animatedBackground"></canvas>
+
+    <!-- Cursor personalizado -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">FiveM Dev</div>
+            <nav>
+                <button class="nav-link" data-section="about">Sobre Mí</button>
+                <button class="nav-link" data-section="projects">Proyectos</button>
+                <button class="nav-link" data-section="skills">Habilidades</button>
+                <button class="nav-link" data-section="contact">Contacto</button>
+            </nav>
+            <div>
+                <button class="btn btn-primary" data-section="contact">Contáctame</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-overlay"></div>
+            <div class="hero-gradient-top"></div>
+
+            <!-- Gradient Blobs -->
+            <div class="gradient-blob-container blob-1">
+                <canvas id="gradientBlob1"></canvas>
+            </div>
+            <div class="gradient-blob-container blob-2">
+                <canvas id="gradientBlob2"></canvas>
+            </div>
+
+            <div class="container hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">
+                        FiveM Developer & <span id="rotatingText" class="rotating-text">Server Creator</span>
+                    </h1>
+                    <p class="hero-description">
+                        Creando experiencias inmersivas de juego a través de scripts personalizados, desarrollo de servidores
+                        y mecánicas de juego innovadoras.
+                    </p>
+                </div>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary btn-lg" data-section="projects">Ver Mi Trabajo</button>
+                    <button class="btn btn-outline btn-lg" data-section="contact">Contactar</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="container">
+            <div class="about-grid">
+                <div class="about-image-container">
+                    <div class="about-image-inner">
+                        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-IRpInQnwZNdBqpuvX4C3g8JAgqg36s.png" alt="Logo A" class="about-image">
+                    </div>
+                </div>
+                <div class="about-content">
+                    <div>
+                        <h2 class="section-title">Sobre Mí</h2>
+                        <div class="section-divider"></div>
+                    </div>
+                    <p class="section-description">
+                        Soy un desarrollador apasionado de FiveM con experiencia en la creación de scripts personalizados,
+                        configuraciones de servidores y mecánicas de juego. Con una sólida base en programación Lua y
+                        arquitectura de servidores, me especializo en construir experiencias inmersivas de roleplay que
+                        involucran a los jugadores y crean comunidades vibrantes.
+                    </p>
+                    <p class="section-description">
+                        Mi enfoque combina experiencia técnica con visión creativa, asegurando que cada proyecto no solo
+                        funcione perfectamente sino que también ofrezca una experiencia de juego única y memorable.
+                    </p>
+                    <div class="social-links">
+                        <a href="https://github.com" target="_blank" class="btn btn-outline btn-icon">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                            </svg>
+                        </a>
+                        <a href="https://linkedin.com" target="_blank" class="btn btn-outline btn-icon">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                                <rect x="2" y="9" width="4" height="12"></rect>
+                                <circle cx="4" cy="4" r="2"></circle>
+                            </svg>
+                        </a>
+                        <a href="mailto:contact@example.com" class="btn btn-outline btn-icon">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="projects-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Proyectos Destacados</h2>
+                    <div class="section-divider center"></div>
+                    <p class="section-description center">
+                        Explora algunos de mis trabajos recientes en desarrollo de FiveM, desde scripts personalizados hasta
+                        soluciones completas de servidor.
+                    </p>
+                </div>
+
+                <div class="projects-grid">
+                    <!-- Project 1 -->
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="/images/armas-custom.png" alt="Armas Realistas Custom">
+                        </div>
+                        <div class="card-content">
+                            <div class="card-header">
+                                <h3 class="card-title">Armas Realistas Custom</h3>
+                                <a href="#" class="card-link">
+                                    <svg class="icon" viewBox="0 0 24 24">
+                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                        <polyline points="15 3 21 3 21 9"></polyline>
+                                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                                    </svg>
+                                </a>
+                            </div>
+                            <p class="card-description">
+                                Pack de armas personalizadas con modelos 3D de alta calidad, animaciones realistas y sistema de daño
+                                balanceado para una experiencia inmersiva.
+                            </p>
+                            <div class="badge-container">
+                                <span class="badge">Lua</span>
+                                <span class="badge">Modelado 3D</span>
+                                <span class="badge">Balanceo</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 2 -->
+                    <div class="card">
+                        <div class="card-image card-gradient">
+                            <div class="card-image-center">
+                                <img src="/images/code-icon.png" alt="Scripts Económicos" style="filter: invert(1);">
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-header">
+                                <h3 class="card-title">Scripts Económicos</h3>
+                                <a href="#" class="card-link">
+                                    <svg class="icon" viewBox="0 0 24 24">
+                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                        <polyline points="15 3 21 3 21 9"></polyline>
+                                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                                    </svg>
+                                </a>
+                            </div>
+                            <p class="card-description">
+                                Gran cantidad de scripts de trabajos, robos, autos sin marcas, ropa custom y mucho más para mejorar
+                                la experiencia de roleplay en tu servidor.
+                            </p>
+                            <div class="badge-container">
+                                <span class="badge">Lua</span>
+                                <span class="badge">Customización</span>
+                                <span class="badge">Roleplay</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 3 -->
+                    <div class="card">
+                        <div class="card-image card-gradient">
+                            <div class="card-image-center">
+                                <img src="/images/esx-logo.png" alt="ESX Framework">
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-header">
+                                <h3 class="card-title">Paquete de Servidor RP</h3>
+                                <a href="#" class="card-link">
+                                    <svg class="icon" viewBox="0 0 24 24">
+                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                        <polyline points="15 3 21 3 21 9"></polyline>
+                                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                                    </svg>
+                                </a>
+                            </div>
+                            <p class="card-description">
+                                Una solución completa de servidor con scripts personalizados, modificaciones de mapa y rendimiento
+                                optimizado.
+                            </p>
+                            <div class="badge-container">
+                                <span class="badge">Configuración</span>
+                                <span class="badge">Lua</span>
+                                <span class="badge">Optimización</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 4 -->
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="/images/web-development.png" alt="Desarrollo Web">
+                        </div>
+                        <div class="card-content">
+                            <div class="card-header">
+                                <h3 class="card-title">Desarrollo Web Profesional</h3>
+                                <a href="#" class="card-link">
+                                    <svg class="icon" viewBox="0 0 24 24">
+                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                        <polyline points="15 3 21 3 21 9"></polyline>
+                                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                                    </svg>
+                                </a>
+                            </div>
+                            <p class="card-description">
+                                Creación de sitios web modernos y responsivos para comunidades de FiveM, servidores de juegos y
+                                portfolios personales con diseños atractivos.
+                            </p>
+                            <div class="badge-container">
+                                <span class="badge">HTML/CSS</span>
+                                <span class="badge">JavaScript</span>
+                                <span class="badge">React</span>
+                                <span class="badge">Next.js</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="projects-more">
+                    <button class="btn btn-outline btn-lg">Ver Todos los Proyectos</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="skills-section">
+            <div class="skills-bg"></div>
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Habilidades y Experiencia</h2>
+                    <div class="section-divider center"></div>
+                    <p class="section-description center">
+                        Mi conjunto de herramientas técnicas y conocimientos especializados en desarrollo de FiveM.
+                    </p>
+                </div>
+
+                <div class="skills-grid">
+                    <div class="skill-card">
+                        <div class="skill-content">
+                            <div class="skill-icon">
+                                <svg class="icon icon-lg icon-purple" viewBox="0 0 24 24">
+                                    <polyline points="16 18 22 12 16 6"></polyline>
+                                    <polyline points="8 6 2 12 8 18"></polyline>
+                                </svg>
+                            </div>
+                            <h3 class="skill-title">Scripting en Lua</h3>
+                            <p class="skill-description">
+                                Experto en crear scripts personalizados, frameworks y mecánicas de juego usando Lua.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="skill-card">
+                        <div class="skill-content">
+                            <div class="skill-icon">
+                                <svg class="icon icon-lg icon-blue" viewBox="0 0 24 24">
+                                    <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                                    <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                                    <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                                    <line x1="6" y1="18" x2="6.01" y2="18"></line>
+                                </svg>
+                            </div>
+                            <h3 class="skill-title">Desarrollo de Servidores</h3>
+                            <p class="skill-description">
+                                Habilidad en configuración de servidores, optimización y gestión de recursos.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="skill-card">
+                        <div class="skill-content">
+                            <div class="skill-icon">
+                                <svg class="icon icon-lg icon-purple" viewBox="0 0 24 24">
+                                    <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                                </svg>
+                            </div>
+                            <h3 class="skill-title">Integración de Bases de Datos</h3>
+                            <p class="skill-description">
+                                Experiencia con MySQL y SQLite para almacenamiento y gestión de datos persistentes.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="skill-card">
+                        <div class="skill-content">
+                            <div class="skill-icon">
+                                <svg class="icon icon-lg icon-blue" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="skill-title">Desarrollo de UI</h3>
+                            <p class="skill-description">
+                                Creación de interfaces de usuario responsivas e intuitivas con HTML, CSS y JavaScript.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="skills-bars">
+                    <div>
+                        <h3 class="skills-category">Habilidades Técnicas</h3>
+                        <div class="skill-bar">
+                            <div class="skill-bar-header">
+                                <span class="skill-bar-name">Programación Lua</span>
+                                <span>95%</span>
+                            </div>
+                            <div class="skill-bar-bg">
+                                <div class="skill-bar-fill" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-header">
+                                <span class="skill-bar-name">JavaScript</span>
+                                <span>85%</span>
+                            </div>
+                            <div class="skill-bar-bg">
+                                <div class="skill-bar-fill" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-header">
+                                <span class="skill-bar-name">SQL</span>
+                                <span>80%</span>
+                            </div>
+                            <div class="skill-bar-bg">
+                                <div class="skill-bar-fill" style="width: 80%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-header">
+                                <span class="skill-bar-name">HTML/CSS</span>
+                                <span>90%</span>
+                            </div>
+                            <div class="skill-bar-bg">
+                                <div class="skill-bar-fill" style="width: 90%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="skills-category">Experiencia en FiveM</h3>
+                        <div class="skill-bar">
+                            <div class="skill-bar-header">
+                                <span class="skill-bar-name">Desarrollo de Recursos</span>
+                                <span>95%</span>
+                            </div>
+                            <div class="skill-bar-bg">
+                                <div class="skill-bar-fill" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-header">
+                                <span class="skill-bar-name">Configuración de Servidores</span>
+                                <span>90%</span>
+                            </div>
+                            <div class="skill-bar-bg">
+                                <div class="skill-bar-fill" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-header">
+                                <span class="skill-bar-name">Personalización de Frameworks</span>
+                                <span>85%</span>
+                            </div>
+                            <div class="skill-bar-bg">
+                                <div class="skill-bar-fill" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-header">
+                                <span class="skill-bar-name">Optimización de Rendimiento</span>
+                                <span>80%</span>
+                            </div>
+                            <div class="skill-bar-bg">
+                                <div class="skill-bar-fill" style="width: 80%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Contacto</h2>
+                    <div class="section-divider center"></div>
+                    <p class="section-description center">
+                        ¿Interesado en trabajar juntos? Hablemos sobre tu proyecto de FiveM y hagamos realidad tus ideas.
+                    </p>
+                </div>
+
+                <div class="contact-cards">
+                    <!-- Discord Card -->
+                    <div class="contact-card">
+                        <div class="contact-card-header discord-header"></div>
+                        <div class="contact-card-content">
+                            <div class="contact-icon discord-icon">
+                                <svg class="icon icon-white" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </div>
+
+                            <h3 class="contact-title">Discord</h3>
+                            <p class="contact-description">
+                                Contáctame a través de Discord para una respuesta rápida.
+                            </p>
+
+                            <div class="contact-username">
+                                <div class="username-box">owaaa23</div>
+                                <button class="btn btn-outline btn-icon" id="copyDiscord">
+                                    <svg class="icon" id="discordIcon" viewBox="0 0 24 24">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <button class="btn btn-gradient">
+                                <svg class="icon icon-white" viewBox="0 0 24 24" style="margin-right: 0.5rem;">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                                Abrir Discord
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Instagram Card -->
+                    <div class="contact-card">
+                        <div class="contact-card-header instagram-header"></div>
+                        <div class="contact-card-content">
+                            <div class="contact-icon instagram-icon">
+                                <svg class="icon icon-white" viewBox="0 0 24 24">
+                                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                                </svg>
+                            </div>
+
+                            <h3 class="contact-title">Instagram</h3>
+                            <p class="contact-description">
+                                Sígueme en Instagram para ver mis últimas actualizaciones.
+                            </p>
+
+                            <div class="contact-username">
+                                <div class="username-box">bautii.sab</div>
+                                <button class="btn btn-outline btn-icon" id="copyInstagram">
+                                    <svg class="icon" id="instagramIcon" viewBox="0 0 24 24">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <button class="btn btn-gradient-pink">
+                                <svg class="icon icon-white" viewBox="0 0 24 24" style="margin-right: 0.5rem;">
+                                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                                </svg>
+                                Visitar Instagram
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-logo">Vortex Shop</div>
+            <div class="footer-copyright">
+                © <span id="currentYear"></span> Vortex Shop. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // Set current year in footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Cursor personalizado
+        (function() {
+            const cursorDot = document.getElementById('cursor-dot');
+            const cursorOutline = document.getElementById('cursor-outline');
+            
+            // Solo activar en dispositivos no táctiles
+            if (window.matchMedia("(pointer: fine)").matches) {
+                document.addEventListener('mousemove', (e) => {
+                    // Posición del cursor principal (punto)
+                    const posX = e.clientX;
+                    const posY = e.clientY;
+                    
+                    // Aplicar posición al punto central inmediatamente
+                    cursorDot.style.left = `${posX}px`;
+                    cursorDot.style.top = `${posY}px`;
+                    
+                    // Aplicar posición al contorno con un ligero retraso para efecto de seguimiento
+                    setTimeout(() => {
+                        cursorOutline.style.left = `${posX}px`;
+                        cursorOutline.style.top = `${posY}px`;
+                    }, 80);
+                });
+                
+                // Efecto al hacer clic
+                document.addEventListener('mousedown', () => {
+                    cursorDot.style.transform = 'translate(-50%, -50%) scale(0.7)';
+                    cursorOutline.style.transform = 'translate(-50%, -50%) scale(0.7)';
+                    cursorOutline.style.borderColor = 'rgba(59, 130, 246, 0.8)';
+                });
+                
+                document.addEventListener('mouseup', () => {
+                    cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
+                    cursorOutline.style.transform = 'translate(-50%, -50%) scale(1)';
+                    cursorOutline.style.borderColor = 'rgba(147, 51, 234, 0.5)';
+                });
+                
+                // Detectar elementos interactivos
+                document.querySelectorAll('a, button, [role="button"], input[type="button"], input[type="submit"], input[type="reset"], .card').forEach(el => {
+                    el.addEventListener('mouseenter', () => {
+                        cursorDot.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                        cursorOutline.style.width = '30px';
+                        cursorOutline.style.height = '30px';
+                        cursorOutline.style.borderColor = 'rgba(59, 130, 246, 0.7)';
+                        cursorOutline.style.backgroundColor = 'rgba(147, 51, 234, 0.1)';
+                    });
+                    
+                    el.addEventListener('mouseleave', () => {
+                        cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
+                        cursorOutline.style.width = '40px';
+                        cursorOutline.style.height = '40px';
+                        cursorOutline.style.borderColor = 'rgba(147, 51, 234, 0.5)';
+                        cursorOutline.style.backgroundColor = 'transparent';
+                    });
+                });
+            }
+        })();
+
+        // Rotating Text
+        (function() {
+            const qualities = ["Server Creator", "Script Developer", "UI Designer", "Framework Builder", "Game Enhancer"];
+            const rotatingText = document.getElementById('rotatingText');
+            let index = 0;
+
+            setInterval(() => {
+                // Start fade out
+                rotatingText.classList.add('fade-out');
+
+                // Change text and fade in after a short delay
+                setTimeout(() => {
+                    index = (index + 1) % qualities.length;
+                    rotatingText.textContent = qualities[index];
+                    rotatingText.classList.remove('fade-out');
+                }, 500); // Half of the transition time
+            }, 3000);
+        })();
+
+        // Smooth Scrolling
+        (function() {
+            const navLinks = document.querySelectorAll('[data-section]');
+            const sections = {
+                about: document.getElementById('about'),
+                projects: document.getElementById('projects'),
+                skills: document.getElementById('skills'),
+                contact: document.getElementById('contact')
+            };
+
+            // Function to handle smooth scrolling
+            function scrollToSection(sectionId) {
+                const section = sections[sectionId];
+                if (section) {
+                    // Update active nav link
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('active');
+                    });
+                    document.querySelectorAll(`.nav-link[data-section="${sectionId}"]`).forEach(link => {
+                        link.classList.add('active');
+                    });
+
+                    // Calculate target position (with offset for the navigation bar)
+                    const offset = 80;
+                    const targetPosition = section.offsetTop - offset;
+
+                    // Smooth scroll animation
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+
+                    // Visual effect: highlight the section briefly
+                    section.classList.add('section-highlight');
+                    setTimeout(() => {
+                        section.classList.remove('section-highlight');
+                    }, 1000);
+                }
+            }
+
+            // Add click event listeners to all navigation links
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    const sectionId = link.getAttribute('data-section');
+                    scrollToSection(sectionId);
+                });
+            });
+
+            // Detect active section on scroll
+            window.addEventListener('scroll', () => {
+                const scrollPosition = window.scrollY + 100;
+
+                // Check which section is currently in view
+                if (sections.about && scrollPosition >= sections.about.offsetTop && 
+                    sections.projects && scrollPosition < sections.projects.offsetTop) {
+                    setActiveSection('about');
+                } else if (sections.projects && scrollPosition >= sections.projects.offsetTop && 
+                    sections.skills && scrollPosition < sections.skills.offsetTop) {
+                    setActiveSection('projects');
+                } else if (sections.skills && scrollPosition >= sections.skills.offsetTop && 
+                    sections.contact && scrollPosition < sections.contact.offsetTop) {
+                    setActiveSection('skills');
+                } else if (sections.contact && scrollPosition >= sections.contact.offsetTop) {
+                    setActiveSection('contact');
+                } else {
+                    setActiveSection('');
+                }
+            });
+
+            function setActiveSection(sectionId) {
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    if (link.getAttribute('data-section') === sectionId) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+            }
+
+            // Trigger initial check to set active section based on current scroll position
+            setTimeout(() => {
+                window.dispatchEvent(new Event('scroll'));
+            }, 100);
+        })();
+
+        // Copy to Clipboard Functionality
+        (function() {
+            const copyDiscord = document.getElementById('copyDiscord');
+            const copyInstagram = document.getElementById('copyInstagram');
+            const discordIcon = document.getElementById('discordIcon');
+            const instagramIcon = document.getElementById('instagramIcon');
+
+            copyDiscord.addEventListener('click', () => {
+                navigator.clipboard.writeText('owaaa23');
+                
+                // Change icon to checkmark
+                discordIcon.innerHTML = '<polyline points="20 6 9 17 4 12"></polyline>';
+                
+                // Show toast notification
+                showToast('Copiado al portapapeles', 'Nombre de usuario de Discord copiado al portapapeles');
+                
+                // Reset icon after 2 seconds
+                setTimeout(() => {
+                    discordIcon.innerHTML = '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>';
+                }, 2000);
+            });
+
+            copyInstagram.addEventListener('click', () => {
+                navigator.clipboard.writeText('bautii.sab');
+                
+                // Change icon to checkmark
+                instagramIcon.innerHTML = '<polyline points="20 6 9 17 4 12"></polyline>';
+                
+                // Show toast notification
+                showToast('Copiado al portapapeles', 'Nombre de usuario de Instagram copiado al portapapeles');
+                
+                // Reset icon after 2 seconds
+                setTimeout(() => {
+                    instagramIcon.innerHTML = '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>';
+                }, 2000);
+            });
+
+            function showToast(title, description) {
+                const toastContainer = document.getElementById('toastContainer');
+                
+                const toast = document.createElement('div');
+                toast.className = 'toast';
+                toast.innerHTML = `
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-description">${description}</div>
+                `;
+                
+                toastContainer.appendChild(toast);
+                
+                // Trigger reflow to enable transition
+                toast.offsetHeight;
+                
+                // Show toast
+                toast.classList.add('show');
+                
+                // Remove toast after 3 seconds
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => {
+                        toastContainer.removeChild(toast);
+                    }, 300);
+                }, 3000);
+            }
+        })();
+
+        // Animated Background
+        (function() {
+            const canvas = document.getElementById('animatedBackground');
+            const ctx = canvas.getContext('2d');
+
+            // Set canvas dimensions
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+
+            // Initial resize
+            resizeCanvas();
+
+            // Resize on window resize
+            window.addEventListener('resize', resizeCanvas);
+
+            // Particles array
+            const particles = [];
+            const particleCount = Math.min(50, Math.floor(window.innerWidth / 30));
+
+            // Create particles
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 2 + 0.5,
+                    color: Math.random() > 0.5 ? "rgba(147, 51, 234, 0.3)" : "rgba(59, 130, 246, 0.3)",
+                    speedX: Math.random() * 0.5 - 0.25,
+                    speedY: Math.random() * 0.5 - 0.25,
+                });
+            }
+
+            // Draw grid
+            function drawGrid() {
+                ctx.strokeStyle = "rgba(255, 255, 255, 0.03)";
+                ctx.lineWidth = 1;
+
+                const gridSize = 40;
+                const offsetX = (canvas.width % gridSize) / 2;
+                const offsetY = (canvas.height % gridSize) / 2;
+
+                // Vertical lines
+                for (let x = offsetX; x < canvas.width; x += gridSize) {
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    ctx.lineTo(x, canvas.height);
+                    ctx.stroke();
+                }
+
+                // Horizontal lines
+                for (let y = offsetY; y < canvas.height; y += gridSize) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(canvas.width, y);
+                    ctx.stroke();
+                }
+            }
+
+            // Draw particles
+            function drawParticles() {
+                particles.forEach((particle) => {
+                    ctx.beginPath();
+                    ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = particle.color;
+                    ctx.fill();
+
+                    // Update position
+                    particle.x += particle.speedX;
+                    particle.y += particle.speedY;
+
+                    // Bounce off edges
+                    if (particle.x < 0 || particle.x > canvas.width) {
+                        particle.speedX = -particle.speedX;
+                    }
+                    if (particle.y < 0 || particle.y > canvas.height) {
+                        particle.speedY = -particle.speedY;
+                    }
+                });
+            }
+
+            // Draw connections between particles
+            function drawConnections() {
+                const maxDistance = 150;
+
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+
+                        if (distance < maxDistance) {
+                            ctx.beginPath();
+                            ctx.strokeStyle = `rgba(147, 51, 234, ${0.1 * (1 - distance / maxDistance)})`;
+                            ctx.lineWidth = 1;
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
+
+            // Animation loop
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                drawGrid();
+                drawParticles();
+                drawConnections();
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        })();
+
+        // Gradient Blobs
+        (function() {
+            function setupGradientBlob(canvasId, color1, color2) {
+                const canvas = document.getElementById(canvasId);
+                const ctx = canvas.getContext('2d');
+
+                // Set canvas dimensions
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+
+                let time = 0;
+                const speed = 0.0005;
+
+                // Animation loop
+                function animate() {
+                    time += speed;
+
+                    // Clear canvas
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                    // Create gradient
+                    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+                    gradient.addColorStop(0, color1);
+                    gradient.addColorStop(1, color2);
+
+                    ctx.fillStyle = gradient;
+
+                    // Draw blob
+                    ctx.beginPath();
+
+                    const centerX = canvas.width / 2;
+                    const centerY = canvas.height / 2;
+                    const radius = Math.min(canvas.width, canvas.height) * 0.4;
+
+                    for (let i = 0; i < Math.PI * 2; i += 0.01) {
+                        const noise = Math.sin(i * 5 + time) * 0.2 + Math.sin(i * 3 - time * 1.5) * 0.15;
+                        const x = centerX + Math.cos(i) * radius * (1 + noise);
+                        const y = centerY + Math.sin(i) * radius * (1 + noise);
+
+                        if (i === 0) {
+                            ctx.moveTo(x, y);
+                        } else {
+                            ctx.lineTo(x, y);
+                        }
+                    }
+
+                    ctx.closePath();
+                    ctx.fill();
+
+                    requestAnimationFrame(animate);
+                }
+
+                animate();
+            }
+
+            // Setup both gradient blobs
+            setupGradientBlob('gradientBlob1', 'rgba(147, 51, 234, 0.2)', 'rgba(59, 130, 246, 0.1)');
+            setupGradientBlob('gradientBlob2', 'rgba(59, 130, 246, 0.2)', 'rgba(147, 51, 234, 0.1)');
+        })();
+    </script>
+</body>
+</html>
