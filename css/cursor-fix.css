@@ -1,0 +1,33 @@
+/* Deshabilitar el cursor normal en todo el sitio */
+html,
+body,
+a,
+button,
+.filter-btn,
+.dot,
+.social-icon,
+.portfolio-link,
+.btn,
+.menu-toggle,
+.back-to-top,
+.reviews-trigger,
+.reviews-close,
+.star-rating i,
+input,
+textarea,
+select,
+.toast-close {
+  cursor: none !important;
+}
+
+/* Asegurarse de que el cursor personalizado sea visible */
+.cursor,
+.cursor-follower {
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Excepción para el área del juego donde ya tienes lógica específica */
+.game-container {
+  cursor: none !important;
+}

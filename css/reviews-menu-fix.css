@@ -1,0 +1,28 @@
+/* Eliminar la estrella del botón trigger de reseñas */
+.reviews-trigger i {
+  display: none; /* Ocultar completamente el ícono de estrella */
+}
+
+/* Ajustar el texto "Reseñas" para que se vea bien sin el ícono */
+.reviews-trigger span {
+  color: white;
+  font-weight: 600;
+  transform: rotate(-90deg);
+  white-space: nowrap;
+  font-size: 16px;
+  position: absolute;
+  top: 50%; /* Centrar verticalmente */
+  left: 50%; /* Centrar horizontalmente */
+  transform: translate(-50%, -50%) rotate(-90deg); /* Centrar y rotar */
+  width: 120px; /* Ancho suficiente para el texto rotado */
+  text-align: center;
+  margin: 0;
+}
+
+/* Ajustar el padding del botón trigger */
+.reviews-trigger {
+  padding: 0; /* Eliminar el padding que compensaba el ícono */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,0 +1,19 @@
+/* Estilos adicionales para el sistema de reseñas */
+
+.loading-reviews {
+  text-align: center;
+  padding: 20px;
+  color: var(--light-color-dark);
+  font-style: italic;
+}
+
+/* Animación de carga */
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+.loading-reviews {
+  animation: pulse 1.5s infinite ease-in-out;
+}

@@ -3,1828 +3,1136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio de Desarrollador FiveM</title>
+    <title>DevFiveM | Desarrollador de Scripts y Servidores</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/space-shooter.css">
+    <link rel="stylesheet" href="css/reviews-menu.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Base styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            border-color: hsl(0, 0%, 89.8%);
+        .contact-link {
+            color: var(--light-color-dark);
+            transition: color var(--transition-fast);
         }
-
-        /* NUEVO: Cursor personalizado */
-        html, body {
-            cursor: none; /* Ocultar el cursor predeterminado */
+        
+        .contact-link:hover {
+            color: var(--primary-color);
+            text-decoration: underline;
         }
-
-        .cursor-dot,
-        .cursor-outline {
-            pointer-events: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            z-index: 9999;
-            transition: opacity 0.3s ease-in-out;
-        }
-
-        .cursor-dot {
-            width: 8px;
-            height: 8px;
-            background: linear-gradient(to right, #9333ea, #3b82f6);
-            transition: transform 0.1s ease-out;
-        }
-
-        .cursor-outline {
-            width: 40px;
-            height: 40px;
-            border: 2px solid rgba(147, 51, 234, 0.5);
-            transition: transform 0.3s ease-out, width 0.3s ease-out, height 0.3s ease-out, border 0.3s ease-out;
-        }
-
-        /* Cursor sobre elementos interactivos */
-        a, button, [role="button"], input[type="button"], input[type="submit"], input[type="reset"], .card {
-            cursor: none;
-        }
-
-        a:hover ~ .cursor-dot,
-        button:hover ~ .cursor-dot,
-        [role="button"]:hover ~ .cursor-dot,
-        input[type="button"]:hover ~ .cursor-dot,
-        input[type="submit"]:hover ~ .cursor-dot,
-        input[type="reset"]:hover ~ .cursor-dot,
-        .card:hover ~ .cursor-dot {
-            transform: translate(-50%, -50%) scale(1.5);
-        }
-
-        a:hover ~ .cursor-outline,
-        button:hover ~ .cursor-outline,
-        [role="button"]:hover ~ .cursor-outline,
-        input[type="button"]:hover ~ .cursor-outline,
-        input[type="submit"]:hover ~ .cursor-outline,
-        input[type="reset"]:hover ~ .cursor-outline,
-        .card:hover ~ .cursor-outline {
-            width: 30px;
-            height: 30px;
-            border-color: rgba(59, 130, 246, 0.7);
-            background-color: rgba(147, 51, 234, 0.1);
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background-color: #0a0a0a;
-            color: #fafafa;
-            line-height: 1.5;
-        }
-
-        /* Container */
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        /* Header */
-        header {
-            position: sticky;
-            top: 0;
-            width: 100%;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            background-color: rgba(10, 10, 10, 0.6);
+        
+        /* Estilos para el minijuego */
+        .space-game {
+            position: relative;
+            background-color: rgba(10, 10, 15, 0.7);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            padding: var(--spacing-xl);
             backdrop-filter: blur(10px);
-            z-index: 50;
-        }
-
-        .header-content {
-            display: flex;
-            height: 4rem;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .logo {
-            font-weight: bold;
-            font-size: 1.25rem;
-            background: linear-gradient(to right, #9333ea, #3b82f6);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        nav {
-            display: none;
-        }
-
-        @media (min-width: 768px) {
-            nav {
-                display: flex;
-                gap: 1.5rem;
-            }
-        }
-
-        /* NUEVO ESTILO DE BOTONES DE NAVEGACIÓN */
-        .nav-link {
-            position: relative;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: #fafafa;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            cursor: none;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            background: transparent;
-            border: none;
+            border: 1px solid rgba(142, 68, 173, 0.3);
             overflow: hidden;
-        }
-
-        .nav-link:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 0;
-            height: 100%;
-            background: linear-gradient(to right, rgba(147, 51, 234, 0.2), rgba(59, 130, 246, 0.2));
-            transition: width 0.3s ease;
-            z-index: -1;
-            border-radius: 0.5rem;
-        }
-
-        .nav-link:hover:before {
-            width: 100%;
-        }
-
-        .nav-link.active {
-            background: linear-gradient(to right, #9333ea, #3b82f6);
-            color: white;
-            font-weight: 600;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3);
-        }
-
-        .nav-link:active {
-            transform: translateY(1px);
-        }
-
-        /* Buttons */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 0.5rem;
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            transition: all 0.2s;
-            cursor: none;
-            border: none;
-        }
-
-        .btn-primary {
-            background-color: #fafafa;
-            color: #0a0a0a;
-        }
-
-        .btn-primary:hover {
-            background-color: #e5e5e5;
-        }
-
-        .btn-outline {
-            background-color: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fafafa;
-        }
-
-        .btn-outline:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-
-        .btn-lg {
-            padding: 0.75rem 1.5rem;
-            font-size: 1rem;
-        }
-
-        .btn-icon {
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-        }
-
-        .btn-gradient {
-            background: linear-gradient(to right, #9333ea, #3b82f6);
-            color: white;
-        }
-
-        .btn-gradient:hover {
-            background: linear-gradient(to right, #7e22ce, #2563eb);
-        }
-
-        .btn-gradient-pink {
-            background: linear-gradient(to right, #ec4899, #9333ea);
-            color: white;
-        }
-
-        .btn-gradient-pink:hover {
-            background: linear-gradient(to right, #db2777, #7e22ce);
-        }
-
-        /* Hero Section */
-        .hero {
-            position: relative;
-            overflow: hidden;
-            padding-top: 6rem;
-            padding-bottom: 5rem;
-        }
-
-        @media (min-width: 768px) {
-            .hero {
-                padding-top: 9rem;
-                padding-bottom: 8rem;
-            }
-        }
-
-        .hero-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to bottom right, rgba(147, 51, 234, 0.2), rgba(10, 10, 10, 1));
-            pointer-events: none;
-        }
-
-        .hero-gradient-top {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 500px;
-            background: linear-gradient(to bottom right, rgba(147, 51, 234, 0.2), rgba(59, 130, 246, 0.2));
-            filter: blur(100px);
-            opacity: 0.3;
-            transform: translateY(-50%);
-            pointer-events: none;
-        }
-
-        .hero-content {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            gap: 2.5rem;
-        }
-
-        .hero-text {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .hero-title {
-            font-size: 2.25rem;
-            font-weight: bold;
-            letter-spacing: -0.025em;
-            line-height: 1.2;
-        }
-
-        @media (min-width: 768px) {
-            .hero-title {
-                font-size: 3.75rem;
-            }
-        }
-
-        .rotating-text {
-            display: inline-block;
-            min-width: 240px;
-            background: linear-gradient(to right, #9333ea, #3b82f6);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            transition: all 1s ease-in-out;
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .rotating-text.fade-out {
-            opacity: 0;
-            transform: translateY(0.75rem);
-        }
-
-        .hero-description {
-            font-size: 1.25rem;
-            color: rgba(255, 255, 255, 0.7);
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-        }
-
-        /* Sections */
-        section {
-            padding: 4rem 0;
-            transition: all 0.5s;
-        }
-
-        @media (min-width: 768px) {
-            section {
-                padding: 6rem 0;
-            }
-        }
-
-        .section-highlight {
-            animation: pulse 1s ease-in-out;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.01); }
-            100% { transform: scale(1); }
-        }
-
-        .section-title {
-            font-size: 1.875rem;
-            font-weight: bold;
-            letter-spacing: -0.025em;
-            margin-bottom: 0.5rem;
-        }
-
-        .section-divider {
-            height: 0.25rem;
-            width: 5rem;
-            background: linear-gradient(to right, #9333ea, #3b82f6);
-            border-radius: 9999px;
-            margin-bottom: 1rem;
-        }
-
-        .section-divider.center {
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .section-description {
-            color: rgba(255, 255, 255, 0.7);
-            margin-top: 1rem;
-            max-width: 700px;
-        }
-
-        .section-description.center {
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        /* About Section */
-        .about-grid {
-            display: grid;
-            gap: 2.5rem;
-        }
-
-        @media (min-width: 768px) {
-            .about-grid {
-                grid-template-columns: repeat(2, 1fr);
-                align-items: center;
-            }
-        }
-
-        .about-image-container {
-            border-radius: 0.5rem;
-            overflow: hidden;
-            background: linear-gradient(to bottom right, rgba(147, 51, 234, 0.1), rgba(59, 130, 246, 0.1));
-            padding: 0.25rem;
-        }
-
-        .about-image-inner {
-            background: linear-gradient(to bottom right, #9333ea, #3b82f6);
-            border-radius: 0.5rem;
-            aspect-ratio: 1 / 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .about-image {
-            width: 80%;
-            height: 80%;
-            object-fit: contain;
-        }
-
-        .about-content {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-        }
-
-        /* Projects Section */
-        .projects-section {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-
-        .projects-grid {
-            display: grid;
-            gap: 2rem;
-        }
-
-        @media (min-width: 768px) {
-            .projects-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .projects-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        .card {
-            overflow: hidden;
-            border-radius: 0.5rem;
-            background-color: #1a1a1a;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            transition: box-shadow 0.3s;
-        }
-
-        .card:hover {
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-
-        .card-image {
-            aspect-ratio: 16 / 9;
-            background: linear-gradient(to bottom right, rgba(147, 51, 234, 0.1), rgba(59, 130, 246, 0.1));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .card-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .card-image-center {
-            width: 50%;
-            height: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .card-image-center img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .card-gradient {
-            background: linear-gradient(to bottom right, #9333ea, #3b82f6);
-        }
-
-        .card-content {
-            padding: 1.5rem;
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-        }
-
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-            background: linear-gradient(to right, #9333ea, #3b82f6);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .card-link {
-            color: rgba(255, 255, 255, 0.7);
-            transition: color 0.2s;
-        }
-
-        .card-link:hover {
-            color: #fafafa;
-        }
-
-        .card-description {
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 1rem;
-        }
-
-        .badge-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            padding: 0.25rem 0.75rem;
-            background-color: rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .projects-more {
-            text-align: center;
-            margin-top: 3rem;
-        }
-
-        /* Skills Section */
-        .skills-section {
-            position: relative;
-        }
-
-        .skills-bg {
-            position: absolute;
-            inset: 0;
-            z-index: -10;
-            background: linear-gradient(to bottom, transparent, rgba(147, 51, 234, 0.05));
-            pointer-events: none;
-        }
-
-        .skills-grid {
-            display: grid;
-            gap: 2rem;
-        }
-
-        @media (min-width: 768px) {
-            .skills-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .skills-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
-
-        .skill-card {
-            background: linear-gradient(to bottom right, rgba(147, 51, 234, 0.05), rgba(59, 130, 246, 0.05));
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-        }
-
-        .skill-content {
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .skill-icon {
-            background: linear-gradient(to bottom right, rgba(147, 51, 234, 0.1), rgba(59, 130, 246, 0.1));
-            width: 4rem;
-            height: 4rem;
-            border-radius: 9999px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto;
-        }
-
-        .skill-icon svg {
-            width: 2rem;
-            height: 2rem;
-        }
-
-        .skill-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-        }
-
-        .skill-description {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .skills-bars {
-            display: grid;
-            gap: 2rem;
-            margin-top: 4rem;
-        }
-
-        @media (min-width: 768px) {
-            .skills-bars {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        .skills-category {
-            margin-bottom: 1.5rem;
-            font-size: 1.25rem;
-            font-weight: bold;
-        }
-
-        .skill-bar {
-            margin-bottom: 1rem;
-        }
-
-        .skill-bar-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.25rem;
-        }
-
-        .skill-bar-name {
-            font-weight: 500;
-        }
-
-        .skill-bar-bg {
-            width: 100%;
-            height: 0.625rem;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 9999px;
-        }
-
-        .skill-bar-fill {
-            height: 0.625rem;
-            border-radius: 9999px;
-            background: linear-gradient(to right, #9333ea, #3b82f6);
-        }
-
-        /* Contact Section */
-        .contact-section {
-            background: linear-gradient(to bottom right, rgba(147, 51, 234, 0.1), rgba(59, 130, 246, 0.1));
-        }
-
-        .contact-cards {
-            max-width: 48rem;
-            margin: 0 auto;
-            display: grid;
-            gap: 1.5rem;
-        }
-
-        @media (min-width: 768px) {
-            .contact-cards {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        .contact-card {
-            border-radius: 0.5rem;
-            overflow: hidden;
-            background-color: #1a1a1a;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-
-        .contact-card-header {
-            height: 4rem;
-        }
-
-        .discord-header {
-            background: linear-gradient(to right, rgba(147, 51, 234, 0.3), rgba(59, 130, 246, 0.3));
-        }
-
-        .instagram-header {
-            background: linear-gradient(to right, rgba(236, 72, 153, 0.3), rgba(147, 51, 234, 0.3));
-        }
-
-        .contact-card-content {
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
-        .contact-icon {
-            width: 4rem;
-            height: 4rem;
-            border-radius: 9999px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: -3rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 0 0 4px #1a1a1a;
-        }
-
-        .discord-icon {
-            background: linear-gradient(to right, #9333ea, #3b82f6);
-        }
-
-        .instagram-icon {
-            background: linear-gradient(to right, #ec4899, #9333ea);
-        }
-
-        .contact-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        .contact-description {
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 1rem;
-        }
-
-        .contact-username {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .username-box {
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            font-size: 1.125rem;
-            font-family: monospace;
-        }
-
-        /* Footer */
-        footer {
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 2rem 0;
-        }
-
-        @media (min-width: 768px) {
-            footer {
-                padding: 3rem 0;
-            }
-        }
-
-        .footer-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        @media (min-width: 768px) {
-            .footer-content {
-                flex-direction: row;
-                justify-content: space-between;
-            }
-        }
-
-        .footer-logo {
-            font-weight: bold;
-            font-size: 1.25rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(to right, #9333ea, #3b82f6);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        @media (min-width: 768px) {
-            .footer-logo {
-                margin-bottom: 0;
-            }
-        }
-
-        .footer-copyright {
-            font-size: 0.875rem;
-            color: rgba(255, 255, 255, 0.7);
-            text-align: center;
-        }
-
-        @media (min-width: 768px) {
-            .footer-copyright {
-                text-align: right;
-            }
-        }
-
-        /* Canvas Styles */
-        canvas {
-            position: fixed;
-            inset: 0;
-            z-index: -10;
-            pointer-events: none;
-            opacity: 0.6;
-        }
-
-        /* Gradient Blob */
-        .gradient-blob-container {
-            position: absolute;
-            pointer-events: none;
-        }
-
-        .blob-1 {
-            top: 5rem;
-            left: 2.5rem;
-            width: 300px;
-            height: 300px;
-            opacity: 0.2;
-        }
-
-        .blob-2 {
-            bottom: 0;
-            right: 2.5rem;
-            width: 400px;
-            height: 400px;
-            opacity: 0.2;
-        }
-
-        /* Toast */
-        .toast-container {
-            position: fixed;
-            bottom: 1rem;
-            right: 1rem;
-            z-index: 100;
-        }
-
-        .toast {
-            background-color: #1a1a1a;
-            color: #fafafa;
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin-top: 0.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            max-width: 350px;
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-            transform: translateY(100%);
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .toast-title {
-            font-weight: bold;
-        }
-
-        .toast-description {
-            font-size: 0.875rem;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        /* Icons */
-        .icon {
-            width: 1.25rem;
-            height: 1.25rem;
-            stroke: currentColor;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            fill: none;
-        }
-
-        .icon-lg {
-            width: 1.5rem;
-            height: 1.5rem;
-        }
-
-        .icon-white {
-            stroke: white;
-        }
-
-        .icon-purple {
-            stroke: #9333ea;
-        }
-
-        .icon-blue {
-            stroke: #3b82f6;
-        }
-
-        /* Desactivar cursor personalizado en dispositivos móviles */
-        @media (max-width: 768px) {
-            html, body, a, button, [role="button"], input[type="button"], input[type="submit"], input[type="reset"], .card {
-                cursor: auto;
-            }
-            
-            .cursor-dot, .cursor-outline {
-                display: none;
-            }
+            min-height: 600px;
         }
     </style>
 </head>
 <body>
-    <!-- Animated Background Canvas -->
-    <canvas id="animatedBackground"></canvas>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="loader">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+        </div>
+    </div>
 
     <!-- Cursor personalizado -->
-    <div class="cursor-dot" id="cursor-dot"></div>
-    <div class="cursor-outline" id="cursor-outline"></div>
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- Menú lateral de reseñas -->
+    <div class="reviews-trigger" id="reviewsTrigger">
+        <i class="fas fa-star"></i>
+        <span>Reseñas</span>
+    </div>
+    <div class="reviews-menu" id="reviewsMenu">
+        <div class="reviews-content">
+            <div class="reviews-header">
+                <h3 class="reviews-title">Reseñas de Clientes</h3>
+                <button class="reviews-close" id="reviewsClose"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="reviews-container" id="reviewsContainer">
+                <!-- Las reseñas se cargarán aquí dinámicamente -->
+            </div>
+            <div class="review-form">
+                <h4>Deja tu reseña</h4>
+                <form id="reviewForm">
+                    <div class="form-group">
+                        <label for="reviewName">Nombre</label>
+                        <input type="text" id="reviewName" placeholder="Tu nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Calificación</label>
+                        <div class="star-rating" id="starRating">
+                            <i class="far fa-star" data-rating="1"></i>
+                            <i class="far fa-star" data-rating="2"></i>
+                            <i class="far fa-star" data-rating="3"></i>
+                            <i class="far fa-star" data-rating="4"></i>
+                            <i class="far fa-star" data-rating="5"></i>
+                            <span class="rating-text">Selecciona una calificación</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="reviewComment">Comentario</label>
+                        <textarea id="reviewComment" placeholder="Comparte tu experiencia..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Publicar Reseña</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <!-- Header -->
-    <header>
-        <div class="container header-content">
-            <div class="logo">FiveM Dev</div>
-            <nav>
-                <button class="nav-link" data-section="about">Sobre Mí</button>
-                <button class="nav-link" data-section="projects">Proyectos</button>
-                <button class="nav-link" data-section="skills">Habilidades</button>
-                <button class="nav-link" data-section="contact">Contacto</button>
-            </nav>
-            <div>
-                <button class="btn btn-primary" data-section="contact">Contáctame</button>
+    <header class="header">
+        <div class="container">
+            <div class="navbar">
+                <div class="logo">
+                    <a href="#home">Bautii <span>Sab</span></a>
+                </div>
+                <div class="menu-toggle">
+                    <div class="hamburger">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+                <nav class="nav-menu">
+                    <ul>
+                        <li><a href="#home" class="active">Inicio</a></li>
+                        <li><a href="#about">Sobre Mí</a></li>
+                        <li><a href="#services">Servicios</a></li>
+                        <li><a href="#portfolio">Proyectos</a></li>
+                        <li><a href="#skills">Habilidades</a></li>
+                        <li><a href="#game">Minijuego</a></li>
+                        <li><a href="#contact">Contacto</a></li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main>
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="hero-overlay"></div>
-            <div class="hero-gradient-top"></div>
-
-            <!-- Gradient Blobs -->
-            <div class="gradient-blob-container blob-1">
-                <canvas id="gradientBlob1"></canvas>
-            </div>
-            <div class="gradient-blob-container blob-2">
-                <canvas id="gradientBlob2"></canvas>
-            </div>
-
-            <div class="container hero-content">
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
                 <div class="hero-text">
-                    <h1 class="hero-title">
-                        FiveM Developer & <span id="rotatingText" class="rotating-text">Server Creator</span>
-                    </h1>
-                    <p class="hero-description">
-                        Creando experiencias inmersivas de juego a través de scripts personalizados, desarrollo de servidores
-                        y mecánicas de juego innovadoras.
-                    </p>
-                </div>
-                <div class="hero-buttons">
-                    <button class="btn btn-primary btn-lg" data-section="projects">Ver Mi Trabajo</button>
-                    <button class="btn btn-outline btn-lg" data-section="contact">Contactar</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- About Section -->
-        <section id="about" class="container">
-            <div class="about-grid">
-                <div class="about-image-container">
-                    <div class="about-image-inner">
-                        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-IRpInQnwZNdBqpuvX4C3g8JAgqg36s.png" alt="Logo A" class="about-image">
+                    <h1>Desarrollador <span class="highlight">FiveM</span></h1>
+                    <h2>Soy <span class="typed-text"></span><span class="cursor">&nbsp;</span></h2>
+                    <p>Especialista en desarrollo de scripts personalizados, configuración de servidores y creación de experiencias únicas para FiveM.</p>
+                    <div class="hero-buttons">
+                        <a href="#portfolio" class="btn btn-primary">Ver Proyectos</a>
+                        <a href="#contact" class="btn btn-secondary">Contactar</a>
                     </div>
                 </div>
-                <div class="about-content">
-                    <div>
-                        <h2 class="section-title">Sobre Mí</h2>
-                        <div class="section-divider"></div>
+                <div class="hero-image">
+                    <div class="image-wrapper">
+                        <img src="img/hero-image.png" alt="Desarrollador FiveM">
                     </div>
-                    <p class="section-description">
-                        Soy un desarrollador apasionado de FiveM con experiencia en la creación de scripts personalizados,
-                        configuraciones de servidores y mecánicas de juego. Con una sólida base en programación Lua y
-                        arquitectura de servidores, me especializo en construir experiencias inmersivas de roleplay que
-                        involucran a los jugadores y crean comunidades vibrantes.
-                    </p>
-                    <p class="section-description">
-                        Mi enfoque combina experiencia técnica con visión creativa, asegurando que cada proyecto no solo
-                        funcione perfectamente sino que también ofrezca una experiencia de juego única y memorable.
-                    </p>
-                    <div class="social-links">
-                        <a href="https://github.com" target="_blank" class="btn btn-outline btn-icon">
-                            <svg class="icon" viewBox="0 0 24 24">
-                                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-                            </svg>
-                        </a>
-                        <a href="https://linkedin.com" target="_blank" class="btn btn-outline btn-icon">
-                            <svg class="icon" viewBox="0 0 24 24">
-                                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                                <rect x="2" y="9" width="4" height="12"></rect>
-                                <circle cx="4" cy="4" r="2"></circle>
-                            </svg>
-                        </a>
-                        <a href="mailto:contact@example.com" class="btn btn-outline btn-icon">
-                            <svg class="icon" viewBox="0 0 24 24">
-                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                <polyline points="22,6 12,13 2,6"></polyline>
-                            </svg>
-                        </a>
-                    </div>
+                    <div class="floating-icon icon-1"><i class="fas fa-code"></i></div>
+                    <div class="floating-icon icon-2"><i class="fas fa-server"></i></div>
+                    <div class="floating-icon icon-3"><i class="fas fa-gamepad"></i></div>
                 </div>
             </div>
-        </section>
+        </div>
+        <div class="scroll-down">
+            <a href="#about"><i class="fas fa-chevron-down"></i></a>
+        </div>
+    </section>
 
-        <!-- Projects Section -->
-        <section id="projects" class="projects-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Proyectos Destacados</h2>
-                    <div class="section-divider center"></div>
-                    <p class="section-description center">
-                        Explora algunos de mis trabajos recientes en desarrollo de FiveM, desde scripts personalizados hasta
-                        soluciones completas de servidor.
-                    </p>
-                </div>
-
-                <div class="projects-grid">
-                    <!-- Project 1 -->
-                    <div class="card">
-                        <div class="card-image">
-                            <img src="/images/armas-custom.png" alt="Armas Realistas Custom">
-                        </div>
-                        <div class="card-content">
-                            <div class="card-header">
-                                <h3 class="card-title">Armas Realistas Custom</h3>
-                                <a href="#" class="card-link">
-                                    <svg class="icon" viewBox="0 0 24 24">
-                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                        <polyline points="15 3 21 3 21 9"></polyline>
-                                        <line x1="10" y1="14" x2="21" y2="3"></line>
-                                    </svg>
-                                </a>
-                            </div>
-                            <p class="card-description">
-                                Pack de armas personalizadas con modelos 3D de alta calidad, animaciones realistas y sistema de daño
-                                balanceado para una experiencia inmersiva.
-                            </p>
-                            <div class="badge-container">
-                                <span class="badge">Lua</span>
-                                <span class="badge">Modelado 3D</span>
-                                <span class="badge">Balanceo</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Project 2 -->
-                    <div class="card">
-                        <div class="card-image card-gradient">
-                            <div class="card-image-center">
-                                <img src="/images/code-icon.png" alt="Scripts Económicos" style="filter: invert(1);">
-                            </div>
-                        </div>
-                        <div class="card-content">
-                            <div class="card-header">
-                                <h3 class="card-title">Scripts Económicos</h3>
-                                <a href="#" class="card-link">
-                                    <svg class="icon" viewBox="0 0 24 24">
-                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                        <polyline points="15 3 21 3 21 9"></polyline>
-                                        <line x1="10" y1="14" x2="21" y2="3"></line>
-                                    </svg>
-                                </a>
-                            </div>
-                            <p class="card-description">
-                                Gran cantidad de scripts de trabajos, robos, autos sin marcas, ropa custom y mucho más para mejorar
-                                la experiencia de roleplay en tu servidor.
-                            </p>
-                            <div class="badge-container">
-                                <span class="badge">Lua</span>
-                                <span class="badge">Customización</span>
-                                <span class="badge">Roleplay</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Project 3 -->
-                    <div class="card">
-                        <div class="card-image card-gradient">
-                            <div class="card-image-center">
-                                <img src="/images/esx-logo.png" alt="ESX Framework">
-                            </div>
-                        </div>
-                        <div class="card-content">
-                            <div class="card-header">
-                                <h3 class="card-title">Paquete de Servidor RP</h3>
-                                <a href="#" class="card-link">
-                                    <svg class="icon" viewBox="0 0 24 24">
-                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                        <polyline points="15 3 21 3 21 9"></polyline>
-                                        <line x1="10" y1="14" x2="21" y2="3"></line>
-                                    </svg>
-                                </a>
-                            </div>
-                            <p class="card-description">
-                                Una solución completa de servidor con scripts personalizados, modificaciones de mapa y rendimiento
-                                optimizado.
-                            </p>
-                            <div class="badge-container">
-                                <span class="badge">Configuración</span>
-                                <span class="badge">Lua</span>
-                                <span class="badge">Optimización</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Project 4 -->
-                    <div class="card">
-                        <div class="card-image">
-                            <img src="/images/web-development.png" alt="Desarrollo Web">
-                        </div>
-                        <div class="card-content">
-                            <div class="card-header">
-                                <h3 class="card-title">Desarrollo Web Profesional</h3>
-                                <a href="#" class="card-link">
-                                    <svg class="icon" viewBox="0 0 24 24">
-                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                        <polyline points="15 3 21 3 21 9"></polyline>
-                                        <line x1="10" y1="14" x2="21" y2="3"></line>
-                                    </svg>
-                                </a>
-                            </div>
-                            <p class="card-description">
-                                Creación de sitios web modernos y responsivos para comunidades de FiveM, servidores de juegos y
-                                portfolios personales con diseños atractivos.
-                            </p>
-                            <div class="badge-container">
-                                <span class="badge">HTML/CSS</span>
-                                <span class="badge">JavaScript</span>
-                                <span class="badge">React</span>
-                                <span class="badge">Next.js</span>
-                            </div>
-                        </div>
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-header">
+                <h2>Sobre Mí</h2>
+                <p>Conoce más sobre mi experiencia y trayectoria</p>
+            </div>
+            <div class="about-content">
+                <div class="about-image">
+                    <div class="image-frame">
+                        <img src="img/profile.jpg" alt="Mi foto">
                     </div>
                 </div>
-
-                <div class="projects-more">
-                    <button class="btn btn-outline btn-lg">Ver Todos los Proyectos</button>
+                <div class="about-text">
+                    <h3>Desarrollador FiveM & Programador Web</h3>
+                    <p>Soy un desarrollador apasionado con más de 5 años de experiencia en la creación de scripts personalizados para FiveM, configuración de servidores y desarrollo web.</p>
+                    <p>Mi objetivo es crear experiencias únicas y funcionales que satisfagan las necesidades específicas de cada cliente, optimizando el rendimiento y mejorando la jugabilidad.</p>
+                    
+                    <div class="about-info">
+                        <div class="info-item">
+                            <span class="info-title">Nombre:</span>
+                            <span class="info-value">Bautista</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-title">Discord:</span>
+                            <span class="info-value">owaaa23</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-title">Disponibilidad:</span>
+                            <span class="info-value">Freelance / Proyectos</span>
+                        </div>
+                    </div>
+                    
+                    <div class="about-social">
+                        <a href="https://github.com/devfivem" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
+                        <a href="https://discord.com/channels/@me/1364746613599244331" class="social-icon"><i class="fab fa-discord"></i></a>
+                        <a href="https://twitter.com/devfivem" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="https://youtube.com/devfivem" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div>
+                    
+                    <a href="#" class="btn btn-primary">Volver al principio</a>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Skills Section -->
-        <section id="skills" class="skills-section">
-            <div class="skills-bg"></div>
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Habilidades y Experiencia</h2>
-                    <div class="section-divider center"></div>
-                    <p class="section-description center">
-                        Mi conjunto de herramientas técnicas y conocimientos especializados en desarrollo de FiveM.
-                    </p>
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <div class="section-header">
+                <h2>Mis Servicios</h2>
+                <p>Soluciones personalizadas para tu servidor de FiveM</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Desarrollo de Scripts</h3>
+                    <p>Creación de scripts personalizados en Lua para implementar funcionalidades específicas en tu servidor de FiveM.</p>
                 </div>
-
-                <div class="skills-grid">
-                    <div class="skill-card">
-                        <div class="skill-content">
-                            <div class="skill-icon">
-                                <svg class="icon icon-lg icon-purple" viewBox="0 0 24 24">
-                                    <polyline points="16 18 22 12 16 6"></polyline>
-                                    <polyline points="8 6 2 12 8 18"></polyline>
-                                </svg>
-                            </div>
-                            <h3 class="skill-title">Scripting en Lua</h3>
-                            <p class="skill-description">
-                                Experto en crear scripts personalizados, frameworks y mecánicas de juego usando Lua.
-                            </p>
-                        </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-server"></i>
                     </div>
-
-                    <div class="skill-card">
-                        <div class="skill-content">
-                            <div class="skill-icon">
-                                <svg class="icon icon-lg icon-blue" viewBox="0 0 24 24">
-                                    <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
-                                    <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
-                                    <line x1="6" y1="6" x2="6.01" y2="6"></line>
-                                    <line x1="6" y1="18" x2="6.01" y2="18"></line>
-                                </svg>
-                            </div>
-                            <h3 class="skill-title">Desarrollo de Servidores</h3>
-                            <p class="skill-description">
-                                Habilidad en configuración de servidores, optimización y gestión de recursos.
-                            </p>
-                        </div>
+                    <h3>Configuración de Servidores</h3>
+                    <p>Instalación, configuración y optimización de servidores FiveM para un rendimiento óptimo.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-paint-brush"></i>
                     </div>
-
-                    <div class="skill-card">
-                        <div class="skill-content">
-                            <div class="skill-icon">
-                                <svg class="icon icon-lg icon-purple" viewBox="0 0 24 24">
-                                    <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
-                                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
-                                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
-                                </svg>
-                            </div>
-                            <h3 class="skill-title">Integración de Bases de Datos</h3>
-                            <p class="skill-description">
-                                Experiencia con MySQL y SQLite para almacenamiento y gestión de datos persistentes.
-                            </p>
-                        </div>
+                    <h3>Diseño de UI</h3>
+                    <p>Creación de interfaces de usuario atractivas y funcionales para tus scripts y sistemas.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-database"></i>
                     </div>
+                    <h3>Integración de Bases de Datos</h3>
+                    <p>Implementación y configuración de bases de datos MySQL para almacenar información de jugadores y recursos.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>Optimización de Recursos</h3>
+                    <p>Mejora del rendimiento de scripts y recursos existentes para reducir el consumo de CPU y memoria.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3>Desarrollo Web</h3>
+                    <p>Creación de sitios web para tu comunidad de FiveM, incluyendo sistemas de whitelist y paneles de administración.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                    <div class="skill-card">
-                        <div class="skill-content">
-                            <div class="skill-icon">
-                                <svg class="icon icon-lg icon-blue" viewBox="0 0 24 24">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <line x1="2" y1="12" x2="22" y2="12"></line>
-                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                                </svg>
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio">
+        <div class="container">
+            <div class="section-header">
+                <h2>Mis Proyectos</h2>
+                <p>Algunos de mis trabajos más destacados</p>
+            </div>
+            <div class="portfolio-filter">
+                <button class="filter-btn active" data-filter="all">Todos</button>
+                <button class="filter-btn" data-filter="scripts">Scripts</button>
+                <button class="filter-btn" data-filter="servers">Servidores</button>
+                <button class="filter-btn" data-filter="web">Web</button>
+            </div>
+            <div class="portfolio-grid">
+                <div class="portfolio-item" data-category="scripts">
+                    <div class="portfolio-img">
+                        <img src="img/project1.jpg" alt="Sistema de Policía">
+                    </div>
+                    <div class="portfolio-info">
+                        <h3>Vehiculos debadged</h3>
+                        <p>Autos en alta calidad, sin marcas.</p>
+                        <div class="portfolio-tags">
+                            <span>Vehículos</span>
+                            <span>SinMarcas</span>
+                            <span>Calidad</span>
+                        </div>
+                        <a href="#" class="portfolio-link">Ver Detalles</a>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-category="scripts">
+                    <div class="portfolio-img">
+                        <img src="img/project2.jpg" alt="Sistema de Inventario">
+                    </div>
+                    <div class="portfolio-info">
+                        <h3>Armas custom</h3>
+                        <p>Armamento modelado en 3D con excelente calidad. Este paquete también incluye recoil y imágenes para el inventario.</p>
+                        <div class="portfolio-tags">
+                            <span>3D</span>
+                            <span>Blender</span>
+                            <span>Recoil</span>
+                        </div>
+                        <a href="#" class="portfolio-link">Ver Detalles</a>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-category="servers">
+                    <div class="portfolio-img">
+                        <img src="img/project3.png" alt="Configuración de Servidor">
+                    </div>
+                    <div class="portfolio-info">
+                        <h3>Servidor RP</h3>
+                        <p>Vendo y configuro servidores de alta calidad para GTA 5 Roleplay (RP), tanto en ESX como en QBCore.</p>
+                        <div class="portfolio-tags">
+                            <span>Configuración</span>
+                            <span>Optimización</span>
+                            <span>Soporte</span>
+                        </div>
+                        <a href="#" class="portfolio-link">Ver Detalles</a>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-category="web">
+                    <div class="portfolio-img">
+                        <img src="img/project4.jpg" alt="Panel de Administración">
+                    </div>
+                    <div class="portfolio-info">
+                        <h3>Pantallas de carga unicas!</h3>
+                        <p>Creaciones unicas para cada usuario!</p>
+                        <div class="portfolio-tags">
+                            <span>HTML/CSS</span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <a href="#" class="portfolio-link">Ver Detalles</a>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-category="scripts">
+                    <div class="portfolio-img">
+                        <img src="img/project5.png" alt="Sistema de Trabajos">
+                    </div>
+                    <div class="portfolio-info">
+                        <h3>Scripts</h3>
+                        <p>Cualquier script que necesites, te lo podemos brindar.</p>
+                        <div class="portfolio-tags">
+                            <span>Lua</span>
+                            <span>MySQL</span>
+                            <span>Framework</span>
+                        </div>
+                        <a href="#" class="portfolio-link">Ver Detalles</a>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-category="web">
+                    <div class="portfolio-img">
+                        <img src="img/project6.png" alt="Sitio Web Comunidad">
+                    </div>
+                    <div class="portfolio-info">
+                        <h3>Sitio Web</h3>
+                        <p>Sitio web completo para FiveM o para lo que lo necesites!</p>
+                        <div class="portfolio-tags">
+                            <span>HTML/CSS</span>
+                            <span>JavaScript</span>
+                            <span>PHP</span>
+                        </div>
+                        <a href="#" class="portfolio-link">Ver Detalles</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills">
+        <div class="container">
+            <div class="section-header">
+                <h2>Mis Habilidades</h2>
+                <p>Conocimientos técnicos y experiencia</p>
+            </div>
+            <div class="skills-content">
+                <div class="skills-category">
+                    <h3>Desarrollo FiveM</h3>
+                    <div class="skills-list">
+                        <div class="skill-item">
+                            <div class="skill-info">
+                                <span class="skill-name">Lua</span>
+                                <span class="skill-percentage">95%</span>
                             </div>
-                            <h3 class="skill-title">Desarrollo de UI</h3>
-                            <p class="skill-description">
-                                Creación de interfaces de usuario responsivas e intuitivas con HTML, CSS y JavaScript.
-                            </p>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="95"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-info">
+                                <span class="skill-name">ESX Framework</span>
+                                <span class="skill-percentage">90%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="90"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-info">
+                                <span class="skill-name">QBCore Framework</span>
+                                <span class="skill-percentage">85%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="85"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-info">
+                                <span class="skill-name">NUI (HTML/CSS/JS)</span>
+                                <span class="skill-percentage">90%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="90"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="skills-bars">
-                    <div>
-                        <h3 class="skills-category">Habilidades Técnicas</h3>
-                        <div class="skill-bar">
-                            <div class="skill-bar-header">
-                                <span class="skill-bar-name">Programación Lua</span>
-                                <span>95%</span>
+                <div class="skills-category">
+                    <h3>Desarrollo Web</h3>
+                    <div class="skills-list">
+                        <div class="skill-item">
+                            <div class="skill-info">
+                                <span class="skill-name">HTML/CSS</span>
+                                <span class="skill-percentage">95%</span>
                             </div>
-                            <div class="skill-bar-bg">
-                                <div class="skill-bar-fill" style="width: 95%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-bar-header">
-                                <span class="skill-bar-name">JavaScript</span>
-                                <span>85%</span>
-                            </div>
-                            <div class="skill-bar-bg">
-                                <div class="skill-bar-fill" style="width: 85%"></div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="95"></div>
                             </div>
                         </div>
-                        <div class="skill-bar">
-                            <div class="skill-bar-header">
-                                <span class="skill-bar-name">SQL</span>
-                                <span>80%</span>
+                        <div class="skill-item">
+                            <div class="skill-info">
+                                <span class="skill-name">JavaScript</span>
+                                <span class="skill-percentage">85%</span>
                             </div>
-                            <div class="skill-bar-bg">
-                                <div class="skill-bar-fill" style="width: 80%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-bar-header">
-                                <span class="skill-bar-name">HTML/CSS</span>
-                                <span>90%</span>
-                            </div>
-                            <div class="skill-bar-bg">
-                                <div class="skill-bar-fill" style="width: 90%"></div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="85"></div>
                             </div>
                         </div>
-                    </div>
-
-                    <div>
-                        <h3 class="skills-category">Experiencia en FiveM</h3>
-                        <div class="skill-bar">
-                            <div class="skill-bar-header">
-                                <span class="skill-bar-name">Desarrollo de Recursos</span>
-                                <span>95%</span>
+                        <div class="skill-item">
+                            <div class="skill-info">
+                                <span class="skill-name">PHP</span>
+                                <span class="skill-percentage">75%</span>
                             </div>
-                            <div class="skill-bar-bg">
-                                <div class="skill-bar-fill" style="width: 95%"></div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="80"></div>
                             </div>
                         </div>
-                        <div class="skill-bar">
-                            <div class="skill-bar-header">
-                                <span class="skill-bar-name">Configuración de Servidores</span>
-                                <span>90%</span>
+                        <div class="skill-item">
+                            <div class="skill-info">
+                                <span class="skill-name">MySQL</span>
+                                <span class="skill-percentage">85%</span>
                             </div>
-                            <div class="skill-bar-bg">
-                                <div class="skill-bar-fill" style="width: 90%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-bar-header">
-                                <span class="skill-bar-name">Personalización de Frameworks</span>
-                                <span>85%</span>
-                            </div>
-                            <div class="skill-bar-bg">
-                                <div class="skill-bar-fill" style="width: 85%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-bar-header">
-                                <span class="skill-bar-name">Optimización de Rendimiento</span>
-                                <span>80%</span>
-                            </div>
-                            <div class="skill-bar-bg">
-                                <div class="skill-bar-fill" style="width: 80%"></div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="85"></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="contact-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Contacto</h2>
-                    <div class="section-divider center"></div>
-                    <p class="section-description center">
-                        ¿Interesado en trabajar juntos? Hablemos sobre tu proyecto de FiveM y hagamos realidad tus ideas.
-                    </p>
+            <div class="tools-grid">
+                <div class="tool-item">
+                    <div class="tool-icon">
+                        <i class="fab fa-github"></i>
+                    </div>
+                    <span>GitHub</span>
                 </div>
+                <div class="tool-item">
+                    <div class="tool-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <span>VS Code</span>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-icon">
+                        <i class="fab fa-figma"></i>
+                    </div>
+                    <span>Figma</span>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <span>MySQL</span>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-icon">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <span>TxAdmin</span>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-icon">
+                        <i class="fab fa-node-js"></i>
+                    </div>
+                    <span>Node.js</span>
+                </div>
+            </div>
+        </div>
+        <link rel="stylesheet" href="css/cursor-fix.css">
+    </section>
 
-                <div class="contact-cards">
-                    <!-- Discord Card -->
-                    <div class="contact-card">
-                        <div class="contact-card-header discord-header"></div>
-                        <div class="contact-card-content">
-                            <div class="contact-icon discord-icon">
-                                <svg class="icon icon-white" viewBox="0 0 24 24">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <circle cx="12" cy="12" r="3"></circle>
-                                </svg>
-                            </div>
+    <!-- Space Game Section -->
+    <section id="game" class="space-game">
+        <div class="container">
+            <div class="section-header">
+                <h2>Destructor de Meteoritos</h2>
+                <p>¡Dispara a los meteoritos y sube de nivel! La dificultad aumenta con cada nivel.</p>
+            </div>
+            <div class="game-container">
+                <div class="game-info">
+                    <div class="game-level">Nivel: <span id="level">1</span></div>
+                    <div class="game-score">Puntos: <span id="score">0</span></div>
+                    <div class="game-lives">
+                        <div class="life-icon"></div>
+                        <div class="life-icon"></div>
+                        <div class="life-icon"></div>
+                    </div>
+                </div>
+                <div class="game-ship" id="ship"></div>
+                <div class="game-over" id="gameOver">
+                    <h3>¡Juego Terminado!</h3>
+                    <p>Nivel alcanzado: <span id="finalLevel">1</span></p>
+                    <p>Puntuación final: <span id="finalScore">0</span></p>
+                    <button class="btn btn-primary" id="restartButton">Jugar de nuevo</button>
+                </div>
+            </div>
+            <div class="game-controls">
+                <div class="game-buttons">
+                    <button class="btn btn-secondary" id="startButton">Iniciar Juego</button>
+                    <button class="btn btn-primary" id="instructionsButton">Instrucciones</button>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                            <h3 class="contact-title">Discord</h3>
-                            <p class="contact-description">
-                                Contáctame a través de Discord para una respuesta rápida.
-                            </p>
-
-                            <div class="contact-username">
-                                <div class="username-box">owaaa23</div>
-                                <button class="btn btn-outline btn-icon" id="copyDiscord">
-                                    <svg class="icon" id="discordIcon" viewBox="0 0 24 24">
-                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                    </svg>
-                                </button>
-                            </div>
-
-                            <button class="btn btn-gradient">
-                                <svg class="icon icon-white" viewBox="0 0 24 24" style="margin-right: 0.5rem;">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <circle cx="12" cy="12" r="3"></circle>
-                                </svg>
-                                Abrir Discord
-                            </button>
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2>Contacto</h2>
+                <p>¿Tienes un proyecto en mente? Contáctame directamente</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fab fa-discord"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h3>Discord</h3>
+                            <a href="https://discord.com/channels/@me/1364746613599244331" class="contact-link">owaaa23</a>
                         </div>
                     </div>
-
-                    <!-- Instagram Card -->
-                    <div class="contact-card">
-                        <div class="contact-card-header instagram-header"></div>
-                        <div class="contact-card-content">
-                            <div class="contact-icon instagram-icon">
-                                <svg class="icon icon-white" viewBox="0 0 24 24">
-                                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                                </svg>
-                            </div>
-
-                            <h3 class="contact-title">Instagram</h3>
-                            <p class="contact-description">
-                                Sígueme en Instagram para ver mis últimas actualizaciones.
-                            </p>
-
-                            <div class="contact-username">
-                                <div class="username-box">bautii.sab</div>
-                                <button class="btn btn-outline btn-icon" id="copyInstagram">
-                                    <svg class="icon" id="instagramIcon" viewBox="0 0 24 24">
-                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                    </svg>
-                                </button>
-                            </div>
-
-                            <button class="btn btn-gradient-pink">
-                                <svg class="icon icon-white" viewBox="0 0 24 24" style="margin-right: 0.5rem;">
-                                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                                </svg>
-                                Visitar Instagram
-                            </button>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
                         </div>
+                        <div class="contact-text">
+                            <h3>Email</h3>
+                            <a href="mailto:bautistadev@vortex.com" class="contact-link">bautistadev@vortex.com</a>
+                        </div>
+                    </div>
+                    <div class="contact-social">
+                        <a href="https://github.com/devfivem" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
+                        <a href="discord:///users/owaaa23" class="social-icon"><i class="fab fa-discord"></i></a>
+                        <a href="https://twitter.com/devfivem" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="https://youtube.com/devfivem" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
             </div>
-        </section>
-    </main>
+            <link rel="stylesheet" href="css/reviews-menu.css">
+            <link rel="stylesheet" href="css/reviews-menu-fix.css">
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer>
-        <div class="container footer-content">
-            <div class="footer-logo">Vortex Shop</div>
-            <div class="footer-copyright">
-                © <span id="currentYear"></span> Vortex Shop. Todos los derechos reservados.
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <a href="#home">Dev<span>FiveM</span></a>
+                    <p>Desarrollo profesional de scripts para FiveM y soluciones web personalizadas.</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul>
+                        <li><a href="#home">Inicio</a></li>
+                        <li><a href="#about">Sobre Mí</a></li>
+                        <li><a href="#services">Servicios</a></li>
+                        <li><a href="#portfolio">Proyectos</a></li>
+                        <li><a href="#skills">Habilidades</a></li>
+                        <li><a href="#game">Minijuego</a></li>
+                        <li><a href="#contact">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-services">
+                    <h3>Servicios</h3>
+                    <ul>
+                        <li>Desarrollo de Scripts</li>
+                        <li>Configuración de Servidores</li>
+                        <li>Diseño de UI</li>
+                        <li>Integración de Bases de Datos</li>
+                        <li>Optimización de Recursos</li>
+                        <li>Desarrollo Web</li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h3>Newsletter</h3>
+                    <p>Suscríbete para recibir novedades y ofertas especiales.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Tu Email" required>
+                        <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="year"></span> DevFiveM. Todos los derechos reservados.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Toast Container -->
-    <div class="toast-container" id="toastContainer"></div>
+    <!-- Back to Top Button -->
+    <a href="#home" class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </a>
 
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div class="toast-content">
+            <i class="fas fa-check-circle"></i>
+            <div class="toast-message">
+                <span class="toast-title">¡Éxito!</span>
+                <span class="toast-text">Tu mensaje ha sido enviado correctamente.</span>
+            </div>
+        </div>
+        <i class="fas fa-times toast-close"></i>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/reviews.js"></script>
     <script>
-        // Set current year in footer
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-        // Cursor personalizado
-        (function() {
-            const cursorDot = document.getElementById('cursor-dot');
-            const cursorOutline = document.getElementById('cursor-outline');
+        // Juego de Destructor de Meteoritos - Script
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elementos del juego
+            const gameContainer = document.querySelector('.game-container');
+            const ship = document.getElementById('ship');
+            const scoreElement = document.getElementById('score');
+            const levelElement = document.getElementById('level');
+            const finalScoreElement = document.getElementById('finalScore');
+            const finalLevelElement = document.getElementById('finalLevel');
+            const gameOverScreen = document.getElementById('gameOver');
+            const startButton = document.getElementById('startButton');
+            const restartButton = document.getElementById('restartButton');
+            const instructionsButton = document.getElementById('instructionsButton');
+            const livesContainer = document.querySelector('.game-lives');
             
-            // Solo activar en dispositivos no táctiles
-            if (window.matchMedia("(pointer: fine)").matches) {
-                document.addEventListener('mousemove', (e) => {
-                    // Posición del cursor principal (punto)
-                    const posX = e.clientX;
-                    const posY = e.clientY;
-                    
-                    // Aplicar posición al punto central inmediatamente
-                    cursorDot.style.left = `${posX}px`;
-                    cursorDot.style.top = `${posY}px`;
-                    
-                    // Aplicar posición al contorno con un ligero retraso para efecto de seguimiento
-                    setTimeout(() => {
-                        cursorOutline.style.left = `${posX}px`;
-                        cursorOutline.style.top = `${posY}px`;
-                    }, 80);
-                });
-                
-                // Efecto al hacer clic
-                document.addEventListener('mousedown', () => {
-                    cursorDot.style.transform = 'translate(-50%, -50%) scale(0.7)';
-                    cursorOutline.style.transform = 'translate(-50%, -50%) scale(0.7)';
-                    cursorOutline.style.borderColor = 'rgba(59, 130, 246, 0.8)';
-                });
-                
-                document.addEventListener('mouseup', () => {
-                    cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
-                    cursorOutline.style.transform = 'translate(-50%, -50%) scale(1)';
-                    cursorOutline.style.borderColor = 'rgba(147, 51, 234, 0.5)';
-                });
-                
-                // Detectar elementos interactivos
-                document.querySelectorAll('a, button, [role="button"], input[type="button"], input[type="submit"], input[type="reset"], .card').forEach(el => {
-                    el.addEventListener('mouseenter', () => {
-                        cursorDot.style.transform = 'translate(-50%, -50%) scale(1.5)';
-                        cursorOutline.style.width = '30px';
-                        cursorOutline.style.height = '30px';
-                        cursorOutline.style.borderColor = 'rgba(59, 130, 246, 0.7)';
-                        cursorOutline.style.backgroundColor = 'rgba(147, 51, 234, 0.1)';
-                    });
-                    
-                    el.addEventListener('mouseleave', () => {
-                        cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
-                        cursorOutline.style.width = '40px';
-                        cursorOutline.style.height = '40px';
-                        cursorOutline.style.borderColor = 'rgba(147, 51, 234, 0.5)';
-                        cursorOutline.style.backgroundColor = 'transparent';
-                    });
-                });
+            // Variables del juego
+            let score = 0;
+            let level = 1;
+            let lives = 3;
+            let gameActive = false;
+            let meteorInterval;
+            let bullets = [];
+            let meteors = [];
+            let shipX = 0;
+            let shipY = 0;
+            let canShoot = true;
+            let shootCooldown = 300; // milisegundos entre disparos
+            let meteorSpeed = 2; // velocidad inicial de los meteoritos
+            let meteorSpawnRate = 2000; // tiempo entre aparición de meteoritos
+            let meteorsPerLevel = 10; // meteoritos necesarios para subir de nivel
+            let meteorsDestroyed = 0;
+            
+            // Inicializar posición de la nave
+            function initShipPosition() {
+                const containerRect = gameContainer.getBoundingClientRect();
+                shipX = containerRect.width / 2 - 25;
+                shipY = containerRect.height - 70;
+                ship.style.left = shipX + 'px';
+                ship.style.top = shipY + 'px';
             }
-        })();
+            
+            // Controlar movimiento de la nave con el mouse
+            gameContainer.addEventListener('mousemove', function(e) {
+                if (!gameActive) return;
+                
+                const containerRect = gameContainer.getBoundingClientRect();
+                const mouseX = e.clientX - containerRect.left;
+                
+                // Limitar el movimiento horizontal dentro del contenedor
+                shipX = Math.max(0, Math.min(containerRect.width - 50, mouseX - 25));
+                
+                ship.style.left = shipX + 'px';
+            });
 
-        // Rotating Text
-        (function() {
-            const qualities = ["Server Creator", "Script Developer", "UI Designer", "Framework Builder", "Game Enhancer"];
-            const rotatingText = document.getElementById('rotatingText');
-            let index = 0;
-
-            setInterval(() => {
-                // Start fade out
-                rotatingText.classList.add('fade-out');
-
-                // Change text and fade in after a short delay
+            // Control de visibilidad del cursor personalizado
+            const cursor = document.querySelector('.cursor');
+            const cursorFollower = document.querySelector('.cursor-follower');
+            
+            gameContainer.addEventListener('mouseenter', function() {
+                // Ocultar el cursor personalizado cuando el mouse entra en el área del juego
+                cursor.style.opacity = '0';
+                cursorFollower.style.opacity = '0';
+            });
+            
+            gameContainer.addEventListener('mouseleave', function() {
+                // Mostrar el cursor personalizado cuando el mouse sale del área del juego
+                cursor.style.opacity = '1';
+                cursorFollower.style.opacity = '1';
+            });
+            
+            // Controlar movimiento con el teclado
+            document.addEventListener('keydown', function(e) {
+                if (!gameActive) return;
+                
+                const containerRect = gameContainer.getBoundingClientRect();
+                const step = 20;
+                
+                switch(e.key) {
+                    case 'ArrowLeft':
+                        shipX = Math.max(0, shipX - step);
+                        ship.style.left = shipX + 'px';
+                        break;
+                    case 'ArrowRight':
+                        shipX = Math.min(containerRect.width - 50, shipX + step);
+                        ship.style.left = shipX + 'px';
+                        break;
+                    case ' ': // Barra espaciadora para disparar
+                        shoot();
+                        break;
+                }
+            });
+            
+            // Disparar al hacer clic
+            gameContainer.addEventListener('click', function() {
+                if (gameActive) {
+                    shoot();
+                }
+            });
+            
+            // Función para disparar
+            function shoot() {
+                if (!canShoot || !gameActive) return;
+                
+                // Crear bala
+                const bullet = document.createElement('div');
+                bullet.className = 'game-bullet';
+                
+                // Posicionar bala en el centro de la nave
+                const bulletX = shipX + 22; // Centrar en la nave
+                const bulletY = shipY - 15;
+                
+                bullet.style.left = bulletX + 'px';
+                bullet.style.top = bulletY + 'px';
+                
+                gameContainer.appendChild(bullet);
+                
+                bullets.push({
+                    element: bullet,
+                    x: bulletX,
+                    y: bulletY
+                });
+                
+                // Cooldown entre disparos
+                canShoot = false;
                 setTimeout(() => {
-                    index = (index + 1) % qualities.length;
-                    rotatingText.textContent = qualities[index];
-                    rotatingText.classList.remove('fade-out');
-                }, 500); // Half of the transition time
-            }, 3000);
-        })();
-
-        // Smooth Scrolling
-        (function() {
-            const navLinks = document.querySelectorAll('[data-section]');
-            const sections = {
-                about: document.getElementById('about'),
-                projects: document.getElementById('projects'),
-                skills: document.getElementById('skills'),
-                contact: document.getElementById('contact')
-            };
-
-            // Function to handle smooth scrolling
-            function scrollToSection(sectionId) {
-                const section = sections[sectionId];
-                if (section) {
-                    // Update active nav link
-                    document.querySelectorAll('.nav-link').forEach(link => {
-                        link.classList.remove('active');
-                    });
-                    document.querySelectorAll(`.nav-link[data-section="${sectionId}"]`).forEach(link => {
-                        link.classList.add('active');
-                    });
-
-                    // Calculate target position (with offset for the navigation bar)
-                    const offset = 80;
-                    const targetPosition = section.offsetTop - offset;
-
-                    // Smooth scroll animation
-                    window.scrollTo({
-                        top: targetPosition,
-                        behavior: 'smooth'
-                    });
-
-                    // Visual effect: highlight the section briefly
-                    section.classList.add('section-highlight');
-                    setTimeout(() => {
-                        section.classList.remove('section-highlight');
-                    }, 1000);
+                    canShoot = true;
+                }, shootCooldown);
+            }
+            
+            // Crear un meteorito
+            function createMeteor() {
+                if (!gameActive) return;
+                
+                const containerRect = gameContainer.getBoundingClientRect();
+                const meteor = document.createElement('div');
+                meteor.className = 'game-meteor';
+                
+                // Tamaño aleatorio entre 30px y 60px
+                const size = 30 + Math.floor(Math.random() * 30);
+                meteor.style.width = size + 'px';
+                meteor.style.height = size + 'px';
+                
+                const x = Math.random() * (containerRect.width - size);
+                const y = -size;
+                
+                meteor.style.left = x + 'px';
+                meteor.style.top = y + 'px';
+                
+                gameContainer.appendChild(meteor);
+                
+                meteors.push({
+                    element: meteor,
+                    x: x,
+                    y: y,
+                    size: size,
+                    speed: meteorSpeed * (1 + Math.random() * 0.5) // Velocidad aleatoria
+                });
+            }
+            
+            // Crear explosión
+            function createExplosion(x, y) {
+                const explosion = document.createElement('div');
+                explosion.className = 'game-explosion';
+                
+                explosion.style.left = x + 'px';
+                explosion.style.top = y + 'px';
+                
+                gameContainer.appendChild(explosion);
+                
+                // Eliminar explosión después de la animación
+                setTimeout(() => {
+                    gameContainer.removeChild(explosion);
+                }, 500);
+            }
+            
+            // Mostrar animación de subida de nivel
+            function showLevelUp() {
+                const levelUpText = document.createElement('div');
+                levelUpText.className = 'level-up';
+                levelUpText.textContent = `¡NIVEL ${level}!`;
+                
+                gameContainer.appendChild(levelUpText);
+                
+                // Eliminar texto después de la animación
+                setTimeout(() => {
+                    gameContainer.removeChild(levelUpText);
+                }, 2000);
+            }
+            
+            // Actualizar vidas
+            function updateLives() {
+                // Limpiar contenedor de vidas
+                while (livesContainer.firstChild) {
+                    livesContainer.removeChild(livesContainer.firstChild);
+                }
+                
+                // Añadir iconos de vida
+                for (let i = 0; i < lives; i++) {
+                    const lifeIcon = document.createElement('div');
+                    lifeIcon.className = 'life-icon';
+                    livesContainer.appendChild(lifeIcon);
                 }
             }
-
-            // Add click event listeners to all navigation links
-            navLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    const sectionId = link.getAttribute('data-section');
-                    scrollToSection(sectionId);
-                });
-            });
-
-            // Detect active section on scroll
-            window.addEventListener('scroll', () => {
-                const scrollPosition = window.scrollY + 100;
-
-                // Check which section is currently in view
-                if (sections.about && scrollPosition >= sections.about.offsetTop && 
-                    sections.projects && scrollPosition < sections.projects.offsetTop) {
-                    setActiveSection('about');
-                } else if (sections.projects && scrollPosition >= sections.projects.offsetTop && 
-                    sections.skills && scrollPosition < sections.skills.offsetTop) {
-                    setActiveSection('projects');
-                } else if (sections.skills && scrollPosition >= sections.skills.offsetTop && 
-                    sections.contact && scrollPosition < sections.contact.offsetTop) {
-                    setActiveSection('skills');
-                } else if (sections.contact && scrollPosition >= sections.contact.offsetTop) {
-                    setActiveSection('contact');
-                } else {
-                    setActiveSection('');
-                }
-            });
-
-            function setActiveSection(sectionId) {
-                document.querySelectorAll('.nav-link').forEach(link => {
-                    if (link.getAttribute('data-section') === sectionId) {
-                        link.classList.add('active');
-                    } else {
-                        link.classList.remove('active');
+            
+            // Subir de nivel
+            function levelUp() {
+                level++;
+                levelElement.textContent = level;
+                
+                // Aumentar dificultad
+                meteorSpeed += 0.5;
+                meteorSpawnRate = Math.max(500, meteorSpawnRate - 200);
+                
+                // Reiniciar contador de meteoritos destruidos
+                meteorsDestroyed = 0;
+                
+                // Actualizar intervalo de aparición de meteoritos
+                clearInterval(meteorInterval);
+                meteorInterval = setInterval(createMeteor, meteorSpawnRate);
+                
+                // Mostrar animación de subida de nivel
+                showLevelUp();
+                
+                // Mostrar notificación
+                showToast(`¡Nivel ${level}!`, `La dificultad aumenta. ¡Cuidado!`, 'info');
+            }
+            
+            // Actualizar el juego
+            function updateGame() {
+                if (!gameActive) return;
+                
+                const containerRect = gameContainer.getBoundingClientRect();
+                const shipRect = ship.getBoundingClientRect();
+                
+                // Mover balas
+                for (let i = bullets.length - 1; i >= 0; i--) {
+                    const bullet = bullets[i];
+                    bullet.y -= 10; // Velocidad de la bala
+                    bullet.element.style.top = bullet.y + 'px';
+                    
+                    // Eliminar balas fuera de pantalla
+                    if (bullet.y < -15) {
+                        gameContainer.removeChild(bullet.element);
+                        bullets.splice(i, 1);
                     }
-                });
+                }
+                
+                // Mover meteoritos
+                for (let i = meteors.length - 1; i >= 0; i--) {
+                    const meteor = meteors[i];
+                    meteor.y += meteor.speed;
+                    meteor.element.style.top = meteor.y + 'px';
+                    
+                    const meteorRect = meteor.element.getBoundingClientRect();
+                    
+                    // Comprobar colisión con balas
+                    for (let j = bullets.length - 1; j >= 0; j--) {
+                        const bullet = bullets[j];
+                        const bulletRect = bullet.element.getBoundingClientRect();
+                        
+                        if (
+                            bulletRect.left < meteorRect.right &&
+                            bulletRect.right > meteorRect.left &&
+                            bulletRect.top < meteorRect.bottom &&
+                            bulletRect.bottom > meteorRect.top
+                        ) {
+                            // Colisión bala-meteorito
+                            createExplosion(meteor.x, meteor.y);
+                            
+                            // Eliminar bala y meteorito
+                            gameContainer.removeChild(bullet.element);
+                            gameContainer.removeChild(meteor.element);
+                            bullets.splice(j, 1);
+                            meteors.splice(i, 1);
+                            
+                            // Sumar puntos (más puntos para meteoritos más grandes)
+                            const points = Math.floor(meteor.size / 10) * 10;
+                            score += points;
+                            scoreElement.textContent = score;
+                            
+                            // Contar meteorito destruido
+                            meteorsDestroyed++;
+                            
+                            // Comprobar si subimos de nivel
+                            if (meteorsDestroyed >= meteorsPerLevel) {
+                                levelUp();
+                            }
+                            
+                            // Salir del bucle de balas
+                            break;
+                        }
+                    }
+                    
+                    // Si el meteorito sigue existiendo, comprobar colisión con la nave
+                    if (meteors[i]) {
+                        // Comprobar colisión con la nave
+                        if (
+                            shipRect.left < meteorRect.right &&
+                            shipRect.right > meteorRect.left &&
+                            shipRect.top < meteorRect.bottom &&
+                            shipRect.bottom > meteorRect.top
+                        ) {
+                            // Colisión nave-meteorito
+                            createExplosion(meteor.x, meteor.y);
+                            
+                            // Eliminar meteorito
+                            gameContainer.removeChild(meteor.element);
+                            meteors.splice(i, 1);
+                            
+                            // Perder una vida
+                            lives--;
+                            updateLives();
+                            
+                            // Comprobar si perdimos
+                            if (lives <= 0) {
+                                endGame();
+                                return;
+                            } else {
+                                showToast('¡Impacto!', `Te quedan ${lives} vidas`, 'error');
+                            }
+                        }
+                        
+                        // Eliminar meteoritos fuera de pantalla
+                        else if (meteor.y > containerRect.height) {
+                            gameContainer.removeChild(meteor.element);
+                            meteors.splice(i, 1);
+                        }
+                    }
+                }
+                
+                // Continuar el bucle del juego
+                requestAnimationFrame(updateGame);
             }
-
-            // Trigger initial check to set active section based on current scroll position
-            setTimeout(() => {
-                window.dispatchEvent(new Event('scroll'));
-            }, 100);
-        })();
-
-        // Copy to Clipboard Functionality
-        (function() {
-            const copyDiscord = document.getElementById('copyDiscord');
-            const copyInstagram = document.getElementById('copyInstagram');
-            const discordIcon = document.getElementById('discordIcon');
-            const instagramIcon = document.getElementById('instagramIcon');
-
-            copyDiscord.addEventListener('click', () => {
-                navigator.clipboard.writeText('owaaa23');
+            
+            // Crear fondo de galaxia
+            function createGalaxyBackground() {
+                // Limpiar elementos anteriores
+                const oldNebulas = document.querySelectorAll('.game-nebula');
+                const oldStars = document.querySelectorAll('.game-bg-star');
                 
-                // Change icon to checkmark
-                discordIcon.innerHTML = '<polyline points="20 6 9 17 4 12"></polyline>';
+                oldNebulas.forEach(nebula => nebula.remove());
+                oldStars.forEach(star => star.remove());
                 
-                // Show toast notification
-                showToast('Copiado al portapapeles', 'Nombre de usuario de Discord copiado al portapapeles');
+                // Crear nebulosas
+                for (let i = 0; i < 5; i++) {
+                    const nebula = document.createElement('div');
+                    nebula.className = 'game-nebula';
+                    
+                    // Tamaño aleatorio entre 100px y 300px
+                    const size = 100 + Math.random() * 200;
+                    nebula.style.width = size + 'px';
+                    nebula.style.height = size + 'px';
+                    
+                    // Posición aleatoria
+                    const x = Math.random() * 100;
+                    const y = Math.random() * 100;
+                    nebula.style.left = x + '%';
+                    nebula.style.top = y + '%';
+                    
+                    // Color aleatorio (variaciones de púrpura y azul)
+                    const hue = 240 + Math.random() * 60; // Entre azul y púrpura
+                    nebula.style.background = `radial-gradient(circle, hsla(${hue}, 70%, 60%, 0.3) 0%, transparent 70%)`;
+                    
+                    // Animación con retraso aleatorio
+                    nebula.style.animationDelay = Math.random() * 8 + 's';
+                    
+                    gameContainer.appendChild(nebula);
+                }
                 
-                // Reset icon after 2 seconds
-                setTimeout(() => {
-                    discordIcon.innerHTML = '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>';
-                }, 2000);
-            });
-
-            copyInstagram.addEventListener('click', () => {
-                navigator.clipboard.writeText('bautii.sab');
+                // Crear estrellas de fondo
+                for (let i = 0; i < 100; i++) {
+                    const star = document.createElement('div');
+                    star.className = 'game-bg-star';
+                    
+                    // Tamaño aleatorio (pequeño, mediano o grande)
+                    const sizeClass = Math.random() > 0.7 ? (Math.random() > 0.5 ? 'large' : 'medium') : '';
+                    if (sizeClass) star.classList.add(sizeClass);
+                    
+                    // Posición aleatoria
+                    const x = Math.random() * 100;
+                    const y = Math.random() * 100;
+                    star.style.left = x + '%';
+                    star.style.top = y + '%';
+                    
+                    // Animación con retraso aleatorio
+                    star.style.animationDelay = Math.random() * 3 + 's';
+                    
+                    gameContainer.appendChild(star);
+                }
+            }
+            
+            // Iniciar el juego
+            function startGame() {
+                // Reiniciar variables
+                score = 0;
+                level = 1;
+                lives = 3;
+                meteorsDestroyed = 0;
+                meteorSpeed = 2;
+                meteorSpawnRate = 2000;
                 
-                // Change icon to checkmark
-                instagramIcon.innerHTML = '<polyline points="20 6 9 17 4 12"></polyline>';
+                scoreElement.textContent = score;
+                levelElement.textContent = level;
+                updateLives();
                 
-                // Show toast notification
-                showToast('Copiado al portapapeles', 'Nombre de usuario de Instagram copiado al portapapeles');
+                // Limpiar objetos anteriores
+                bullets.forEach(bullet => gameContainer.removeChild(bullet.element));
+                meteors.forEach(meteor => gameContainer.removeChild(meteor.element));
+                bullets = [];
+                meteors = [];
                 
-                // Reset icon after 2 seconds
-                setTimeout(() => {
-                    instagramIcon.innerHTML = '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>';
-                }, 2000);
-            });
-
-            function showToast(title, description) {
-                const toastContainer = document.getElementById('toastContainer');
+                // Ocultar pantalla de fin de juego
+                gameOverScreen.classList.remove('show');
                 
-                const toast = document.createElement('div');
-                toast.className = 'toast';
-                toast.innerHTML = `
-                    <div class="toast-title">${title}</div>
-                    <div class="toast-description">${description}</div>
-                `;
+                // Inicializar posición de la nave
+                initShipPosition();
                 
-                toastContainer.appendChild(toast);
+                // Crear fondo de galaxia
+                createGalaxyBackground();
                 
-                // Trigger reflow to enable transition
-                toast.offsetHeight;
+                // Activar juego
+                gameActive = true;
+                canShoot = true;
                 
-                // Show toast
+                // Iniciar intervalo de meteoritos
+                meteorInterval = setInterval(createMeteor, meteorSpawnRate);
+                
+                // Iniciar bucle del juego
+                requestAnimationFrame(updateGame);
+                
+                // Cambiar texto del botón
+                startButton.textContent = 'Reiniciar Juego';
+            }
+            
+            // Finalizar el juego
+            function endGame() {
+                gameActive = false;
+                
+                // Detener intervalo de meteoritos
+                clearInterval(meteorInterval);
+                
+                // Mostrar pantalla de fin de juego
+                finalScoreElement.textContent = score;
+                finalLevelElement.textContent = level;
+                gameOverScreen.classList.add('show');
+            }
+            
+            // Mostrar instrucciones
+            function showInstructions() {
+                showToast('Instrucciones', 'Mueve la nave con el ratón o las flechas izquierda/derecha. Haz clic o presiona ESPACIO para disparar. Destruye meteoritos para ganar puntos y subir de nivel.', 'info');
+            }
+            
+            // Mostrar notificación
+            function showToast(title, message, type = 'success') {
+                const toast = document.getElementById('toast');
+                const toastTitle = toast.querySelector('.toast-title');
+                const toastText = toast.querySelector('.toast-text');
+                const toastIcon = toast.querySelector('i');
+                
+                // Establecer contenido
+                toastTitle.textContent = title;
+                toastText.textContent = message;
+                
+                // Establecer icono y color según el tipo
+                if (type === 'success') {
+                    toastIcon.className = 'fas fa-check-circle';
+                    toastIcon.style.color = 'var(--success-color)';
+                } else if (type === 'error') {
+                    toastIcon.className = 'fas fa-exclamation-circle';
+                    toastIcon.style.color = 'var(--danger-color)';
+                } else if (type === 'info') {
+                    toastIcon.className = 'fas fa-info-circle';
+                    toastIcon.style.color = 'var(--info-color)';
+                }
+                
+                // Mostrar toast
                 toast.classList.add('show');
                 
-                // Remove toast after 3 seconds
+                // Ocultar toast después de 3 segundos
                 setTimeout(() => {
                     toast.classList.remove('show');
-                    setTimeout(() => {
-                        toastContainer.removeChild(toast);
-                    }, 300);
                 }, 3000);
             }
-        })();
+            
+            // Variable para controlar si es la primera vez que se inicia el juego
+            let firstPlay = true;
 
-        // Animated Background
-        (function() {
-            const canvas = document.getElementById('animatedBackground');
-            const ctx = canvas.getContext('2d');
-
-            // Set canvas dimensions
-            function resizeCanvas() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
-
-            // Initial resize
-            resizeCanvas();
-
-            // Resize on window resize
-            window.addEventListener('resize', resizeCanvas);
-
-            // Particles array
-            const particles = [];
-            const particleCount = Math.min(50, Math.floor(window.innerWidth / 30));
-
-            // Create particles
-            for (let i = 0; i < particleCount; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    radius: Math.random() * 2 + 0.5,
-                    color: Math.random() > 0.5 ? "rgba(147, 51, 234, 0.3)" : "rgba(59, 130, 246, 0.3)",
-                    speedX: Math.random() * 0.5 - 0.25,
-                    speedY: Math.random() * 0.5 - 0.25,
-                });
-            }
-
-            // Draw grid
-            function drawGrid() {
-                ctx.strokeStyle = "rgba(255, 255, 255, 0.03)";
-                ctx.lineWidth = 1;
-
-                const gridSize = 40;
-                const offsetX = (canvas.width % gridSize) / 2;
-                const offsetY = (canvas.height % gridSize) / 2;
-
-                // Vertical lines
-                for (let x = offsetX; x < canvas.width; x += gridSize) {
-                    ctx.beginPath();
-                    ctx.moveTo(x, 0);
-                    ctx.lineTo(x, canvas.height);
-                    ctx.stroke();
+            // Event listeners
+            startButton.addEventListener('click', function() {
+                // Si es la primera vez que se juega, mostrar instrucciones
+                if (firstPlay) {
+                    showInstructions();
+                    firstPlay = false;
                 }
+                startGame();
+            });
+            restartButton.addEventListener('click', startGame);
+            instructionsButton.addEventListener('click', showInstructions);
 
-                // Horizontal lines
-                for (let y = offsetY; y < canvas.height; y += gridSize) {
-                    ctx.beginPath();
-                    ctx.moveTo(0, y);
-                    ctx.lineTo(canvas.width, y);
-                    ctx.stroke();
-                }
-            }
+            // Inicializar posición de la nave
+            initShipPosition();
 
-            // Draw particles
-            function drawParticles() {
-                particles.forEach((particle) => {
-                    ctx.beginPath();
-                    ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = particle.color;
-                    ctx.fill();
-
-                    // Update position
-                    particle.x += particle.speedX;
-                    particle.y += particle.speedY;
-
-                    // Bounce off edges
-                    if (particle.x < 0 || particle.x > canvas.width) {
-                        particle.speedX = -particle.speedX;
-                    }
-                    if (particle.y < 0 || particle.y > canvas.height) {
-                        particle.speedY = -particle.speedY;
-                    }
-                });
-            }
-
-            // Draw connections between particles
-            function drawConnections() {
-                const maxDistance = 150;
-
-                for (let i = 0; i < particles.length; i++) {
-                    for (let j = i + 1; j < particles.length; j++) {
-                        const dx = particles[i].x - particles[j].x;
-                        const dy = particles[i].y - particles[j].y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-
-                        if (distance < maxDistance) {
-                            ctx.beginPath();
-                            ctx.strokeStyle = `rgba(147, 51, 234, ${0.1 * (1 - distance / maxDistance)})`;
-                            ctx.lineWidth = 1;
-                            ctx.moveTo(particles[i].x, particles[i].y);
-                            ctx.lineTo(particles[j].x, particles[j].y);
-                            ctx.stroke();
-                        }
-                    }
-                }
-            }
-
-            // Animation loop
-            function animate() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                drawGrid();
-                drawParticles();
-                drawConnections();
-                requestAnimationFrame(animate);
-            }
-
-            animate();
-        })();
-
-        // Gradient Blobs
-        (function() {
-            function setupGradientBlob(canvasId, color1, color2) {
-                const canvas = document.getElementById(canvasId);
-                const ctx = canvas.getContext('2d');
-
-                // Set canvas dimensions
-                canvas.width = canvas.offsetWidth;
-                canvas.height = canvas.offsetHeight;
-
-                let time = 0;
-                const speed = 0.0005;
-
-                // Animation loop
-                function animate() {
-                    time += speed;
-
-                    // Clear canvas
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                    // Create gradient
-                    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-                    gradient.addColorStop(0, color1);
-                    gradient.addColorStop(1, color2);
-
-                    ctx.fillStyle = gradient;
-
-                    // Draw blob
-                    ctx.beginPath();
-
-                    const centerX = canvas.width / 2;
-                    const centerY = canvas.height / 2;
-                    const radius = Math.min(canvas.width, canvas.height) * 0.4;
-
-                    for (let i = 0; i < Math.PI * 2; i += 0.01) {
-                        const noise = Math.sin(i * 5 + time) * 0.2 + Math.sin(i * 3 - time * 1.5) * 0.15;
-                        const x = centerX + Math.cos(i) * radius * (1 + noise);
-                        const y = centerY + Math.sin(i) * radius * (1 + noise);
-
-                        if (i === 0) {
-                            ctx.moveTo(x, y);
-                        } else {
-                            ctx.lineTo(x, y);
-                        }
-                    }
-
-                    ctx.closePath();
-                    ctx.fill();
-
-                    requestAnimationFrame(animate);
-                }
-
-                animate();
-            }
-
-            // Setup both gradient blobs
-            setupGradientBlob('gradientBlob1', 'rgba(147, 51, 234, 0.2)', 'rgba(59, 130, 246, 0.1)');
-            setupGradientBlob('gradientBlob2', 'rgba(59, 130, 246, 0.2)', 'rgba(147, 51, 234, 0.1)');
-        })();
+            // Crear fondo de galaxia
+            createGalaxyBackground();
+        });
     </script>
 </body>
 </html>
