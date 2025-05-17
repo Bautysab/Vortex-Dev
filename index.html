@@ -6,7 +6,6 @@
     <title>DevFiveM | Desarrollador de Scripts y Servidores</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/space-shooter.css">
-    <link rel="stylesheet" href="css/reviews-menu.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -48,48 +47,6 @@
     <div class="cursor"></div>
     <div class="cursor-follower"></div>
 
-    <!-- Menú lateral de reseñas -->
-    <div class="reviews-trigger" id="reviewsTrigger">
-        <i class="fas fa-star"></i>
-        <span>Reseñas</span>
-    </div>
-    <div class="reviews-menu" id="reviewsMenu">
-        <div class="reviews-content">
-            <div class="reviews-header">
-                <h3 class="reviews-title">Reseñas de Clientes</h3>
-                <button class="reviews-close" id="reviewsClose"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="reviews-container" id="reviewsContainer">
-                <!-- Las reseñas se cargarán aquí dinámicamente -->
-            </div>
-            <div class="review-form">
-                <h4>Deja tu reseña</h4>
-                <form id="reviewForm">
-                    <div class="form-group">
-                        <label for="reviewName">Nombre</label>
-                        <input type="text" id="reviewName" placeholder="Tu nombre" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Calificación</label>
-                        <div class="star-rating" id="starRating">
-                            <i class="far fa-star" data-rating="1"></i>
-                            <i class="far fa-star" data-rating="2"></i>
-                            <i class="far fa-star" data-rating="3"></i>
-                            <i class="far fa-star" data-rating="4"></i>
-                            <i class="far fa-star" data-rating="5"></i>
-                            <span class="rating-text">Selecciona una calificación</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="reviewComment">Comentario</label>
-                        <textarea id="reviewComment" placeholder="Comparte tu experiencia..." required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Publicar Reseña</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
     <!-- Header -->
     <header class="header">
         <div class="container">
@@ -110,6 +67,7 @@
                         <li><a href="#about">Sobre Mí</a></li>
                         <li><a href="#services">Servicios</a></li>
                         <li><a href="#portfolio">Proyectos</a></li>
+                        <li><a href="#web-projects">Proyectos Web</a></li>
                         <li><a href="#skills">Habilidades</a></li>
                         <li><a href="#game">Minijuego</a></li>
                         <li><a href="#contact">Contacto</a></li>
@@ -181,11 +139,8 @@
                     </div>
                     
                     <div class="about-social">
-                        <a href="https://github.com/devfivem" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
-                        <a href="https://discord.com/channels/@me/1364746613599244331" class="social-icon"><i class="fab fa-discord"></i></a>
-                        <a href="https://twitter.com/devfivem" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
-                        <a href="https://youtube.com/devfivem" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
-                    </div>
+    <a href="https://discord.com/channels/@me/1364746613599244331" class="social-icon"><i class="fab fa-discord"></i></a>
+</div>
                     
                     <a href="#" class="btn btn-primary">Volver al principio</a>
                 </div>
@@ -355,6 +310,54 @@
         </div>
     </section>
 
+    <!-- Web Projects Section -->
+<section id="web-projects" class="web-projects">
+    <div class="container">
+        <div class="section-header">
+            <h2>Proyectos Web en Desarrollo</h2>
+            <p>Mis proyectos web actuales en fase de desarrollo</p>
+        </div>
+        <div class="web-projects-grid">
+            <div class="web-project-item">
+                <div class="web-project-img">
+                    <img src="img/galaxia.png" alt="Vortex Game">
+                </div>
+                <div class="web-project-info">
+                    <h3>Vortex Game</h3>
+                    <p>Plataforma de venta de juegos online con un catálogo extenso y precios competitivos.</p>
+                    <div class="web-project-tags">
+                        <span>E-commerce</span>
+                        <span>React</span>
+                        <span>Next.js</span>
+                    </div>
+                    <div class="web-project-links">
+                        <a href="https://vortexgame.vercel.app/" target="_blank" class="btn btn-primary">Ver Demo</a>
+                        <span class="web-project-status">En Desarrollo</span>
+                    </div>
+                </div>
+            </div>
+            <div class="web-project-item">
+                <div class="web-project-img">
+                    <img src="img/hero-image.png" alt="Vortex Streaming">
+                </div>
+                <div class="web-project-info">
+                    <h3>Vortex Streaming</h3>
+                    <p>Plataforma especializada en la venta de cuentas de servicios de entretenimiento y streaming.</p>
+                    <div class="web-project-tags">
+                        <span>E-commerce</span>
+                        <span>React</span>
+                        <span>Tailwind</span>
+                    </div>
+                    <div class="web-project-links">
+                        <a href="https://vortex-streaming.vercel.app/" target="_blank" class="btn btn-primary">Ver Demo</a>
+                        <span class="web-project-status">En Desarrollo</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
     <!-- Skills Section -->
     <section id="skills" class="skills">
         <div class="container">
@@ -369,24 +372,6 @@
                         <div class="skill-item">
                             <div class="skill-info">
                                 <span class="skill-name">Lua</span>
-                                <span class="skill-percentage">95%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-progress="95"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">ESX Framework</span>
-                                <span class="skill-percentage">90%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-progress="90"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">QBCore Framework</span>
                                 <span class="skill-percentage">85%</span>
                             </div>
                             <div class="skill-bar">
@@ -395,11 +380,29 @@
                         </div>
                         <div class="skill-item">
                             <div class="skill-info">
-                                <span class="skill-name">NUI (HTML/CSS/JS)</span>
-                                <span class="skill-percentage">90%</span>
+                                <span class="skill-name">ESX Framework</span>
+                                <span class="skill-percentage">80%</span>
                             </div>
                             <div class="skill-bar">
-                                <div class="skill-progress" data-progress="90"></div>
+                                <div class="skill-progress" data-progress="80"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-info">
+                                <span class="skill-name">QBCore Framework</span>
+                                <span class="skill-percentage">75%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="75"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-info">
+                                <span class="skill-name">NUI (HTML/CSS/JS)</span>
+                                <span class="skill-percentage">80%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="80"></div>
                             </div>
                         </div>
                     </div>
@@ -410,37 +413,37 @@
                         <div class="skill-item">
                             <div class="skill-info">
                                 <span class="skill-name">HTML/CSS</span>
-                                <span class="skill-percentage">95%</span>
+                                <span class="skill-percentage">85%</span>
                             </div>
                             <div class="skill-bar">
-                                <div class="skill-progress" data-progress="95"></div>
+                                <div class="skill-progress" data-progress="85"></div>
                             </div>
                         </div>
                         <div class="skill-item">
                             <div class="skill-info">
                                 <span class="skill-name">JavaScript</span>
-                                <span class="skill-percentage">85%</span>
+                                <span class="skill-percentage">75%</span>
                             </div>
                             <div class="skill-bar">
-                                <div class="skill-progress" data-progress="85"></div>
+                                <div class="skill-progress" data-progress="75"></div>
                             </div>
                         </div>
                         <div class="skill-item">
                             <div class="skill-info">
                                 <span class="skill-name">PHP</span>
-                                <span class="skill-percentage">75%</span>
+                                <span class="skill-percentage">65%</span>
                             </div>
                             <div class="skill-bar">
-                                <div class="skill-progress" data-progress="80"></div>
+                                <div class="skill-progress" data-progress="65"></div>
                             </div>
                         </div>
                         <div class="skill-item">
                             <div class="skill-info">
                                 <span class="skill-name">MySQL</span>
-                                <span class="skill-percentage">85%</span>
+                                <span class="skill-percentage">70%</span>
                             </div>
                             <div class="skill-bar">
-                                <div class="skill-progress" data-progress="85"></div>
+                                <div class="skill-progress" data-progress="70"></div>
                             </div>
                         </div>
                     </div>
@@ -550,15 +553,10 @@
                         </div>
                     </div>
                     <div class="contact-social">
-                        <a href="https://github.com/devfivem" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
-                        <a href="discord:///users/owaaa23" class="social-icon"><i class="fab fa-discord"></i></a>
-                        <a href="https://twitter.com/devfivem" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
-                        <a href="https://youtube.com/devfivem" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
-                    </div>
+    <a href="discord:///users/owaaa23" class="social-icon"><i class="fab fa-discord"></i></a>
+</div>
                 </div>
             </div>
-            <link rel="stylesheet" href="css/reviews-menu.css">
-            <link rel="stylesheet" href="css/reviews-menu-fix.css">
         </div>
     </section>
 
@@ -577,6 +575,7 @@
                         <li><a href="#about">Sobre Mí</a></li>
                         <li><a href="#services">Servicios</a></li>
                         <li><a href="#portfolio">Proyectos</a></li>
+                        <li><a href="#web-projects">Proyectos Web</a></li>
                         <li><a href="#skills">Habilidades</a></li>
                         <li><a href="#game">Minijuego</a></li>
                         <li><a href="#contact">Contacto</a></li>
