@@ -154,7 +154,35 @@ document.addEventListener("DOMContentLoaded", () => {
     const skillBars = document.querySelectorAll(".skill-progress")
 
     skillBars.forEach((bar) => {
-      const progress = bar.getAttribute("data-progress")
+      let progress = bar.getAttribute("data-progress")
+
+      switch (bar.parentElement.querySelector(".skill-title").textContent) {
+        case "Lua":
+          progress = "70"
+          break
+        case "ESX Framework":
+          progress = "65"
+          break
+        case "QBCore Framework":
+          progress = "60"
+          break
+        case "NUI (HTML/CSS/JS)":
+          progress = "70"
+          break
+        case "HTML/CSS":
+          progress = "75"
+          break
+        case "JavaScript":
+          progress = "65"
+          break
+        case "PHP":
+          progress = "55"
+          break
+        case "MySQL":
+          progress = "60"
+          break
+      }
+
       bar.style.width = progress + "%"
     })
   }
